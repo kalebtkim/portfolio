@@ -1,0 +1,386 @@
+:root {
+    --bg: #0e0e0f;
+    --fg: #ffffff;
+    --bright: #ffffff;
+    --accent: #f38020;
+    --seam: #201711;   /* warm tone where the art hands off to the ridge */
+    --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+    --display: "Geist", "Helvetica Neue", Arial, sans-serif;
+    /* optical nudge pulling the name back into line with the text under it;
+       retune this one value if the glyph edge looks off */
+    --name-nudge: -0.06em;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    min-height: 100vh; display: flex; flex-direction: column;
+    font-family: var(--mono); font-weight: 200; font-size: 14px; line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, p { margin: 0; }
+
+  /* the art, and a gradient that fades it into the page */
+  .hero { position: relative; height: clamp(420px, 72vh, 720px); overflow: hidden; }
+  .art {
+    position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+    font-family: var(--mono);
+    filter: blur(3px) brightness(1.15) contrast(1.12) saturate(1.4);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to bottom,
+      rgba(14, 14, 15, 0.62) 0%,
+      rgba(14, 14, 15, 0.56) 22%,
+      rgba(14, 14, 15, 0.42) 34%,
+      rgba(14, 14, 15, 0) 50%,
+      rgba(14, 14, 15, 0) 58%,
+      rgba(32, 23, 17, 0.42) 74%,
+      rgba(32, 23, 17, 0.88) 90%,
+      var(--seam) 98%,
+      var(--seam) 100%);
+  }
+
+  /* name and summary sit over the art, top left */
+  .intro {
+    position: absolute; z-index: 2;
+    top: clamp(140px, 25vh, 250px); left: clamp(56px, 12vw, 190px);
+    /* lines stop at the middle of the page rather than running across it */
+    right: 50%;
+  }
+  .name {
+    font-family: var(--display); font-weight: 100;
+    font-size: clamp(30px, 8vw, 88px); line-height: 1;
+    letter-spacing: 0.1em; white-space: nowrap;
+    margin-left: var(--name-nudge);
+    color: #fff;
+    /* a tight edge plus two soft halos: readable over the dots without
+       looking like a drop shadow */
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.9),
+      0 0 20px rgba(0, 0, 0, 0.95),
+      0 0 60px rgba(0, 0, 0, 0.85);
+  }
+  /* thin bar across the top: wordmark left, links right */
+  .bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; height: 52px; padding: 0 clamp(16px, 5vw, 72px);
+    background: rgba(14, 14, 15, 0.42);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  .brand {
+    color: #fff; font-size: 14px; font-weight: 200; letter-spacing: 0.04em;
+    text-decoration: none; white-space: nowrap;
+  }
+  .brand span { color: rgba(255, 255, 255, 0.34); }
+  .nav { display: flex; gap: clamp(16px, 2.6vw, 34px); }
+  .nav a {
+    color: rgba(255, 255, 255, 0.72); font-size: 13px; font-weight: 200;
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav a:hover { color: #fff; }
+
+  /* shared: a tight opaque ring so the dots do not read through the
+     letterforms, then widening halos to lift the text off the art */
+  .role,
+  .summary p {
+    text-shadow:
+      0 0 1px #0e0e0f, 0 0 2px #0e0e0f, 0 0 4px #0e0e0f,
+      0 0 6px #0e0e0f, 0 0 9px #0e0e0f, 0 0 13px #0e0e0f,
+      0 0 20px rgba(14, 14, 15, 0.99),
+      0 0 40px rgba(14, 14, 15, 0.96),
+      0 0 84px rgba(14, 14, 15, 0.88);
+  }
+  .role {
+    margin-top: 5px; font-size: 10.5px; font-weight: 300;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .role span { color: rgba(255, 255, 255, 0.3); margin: 0 0.62em; letter-spacing: 0; }
+
+  /* small type needs air: a touch more tracking and leading than the body,
+     and more contrast to hold up against the art */
+  .summary { margin-top: 16px; display: grid; gap: 15px; }
+  .summary p {
+    font-size: 11.5px; font-weight: 300; line-height: 1.95;
+    letter-spacing: 0.022em; color: rgba(255, 255, 255, 0.86);
+  }
+  .summary .cta { color: #fff; letter-spacing: 0.03em; }
+
+  .acts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+  .acts a {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; text-decoration: none; padding: 9px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(14, 12, 11, 0.35);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .acts a:hover { border-color: #fff; background: rgba(255, 255, 255, 0.1); }
+
+  /* photo band below the hero: blurred like the art, with its own gradient
+     at each edge so it emerges from the page background and sinks back in */
+  /* the whole photo, full width, uncropped, running to the bottom of the page */
+  /* rows inside any card: profile, index, project bodies */
+  .card dl { margin: 0; }
+  .card dl > div {
+    display: grid; grid-template-columns: 76px minmax(0, 1fr) auto;
+    gap: 10px; align-items: center; padding: 6px 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .card dl > div:last-child { border-bottom: 0; }
+  .card dt { font-size: 10.5px; color: rgba(255, 255, 255, 0.46); }
+  .card dd { margin: 0; font-size: 11px; color: #fff; }
+  .card dd.addr { white-space: nowrap; }
+  .card dd .sub { color: rgba(255, 255, 255, 0.5); }
+  .card dd .sep { color: rgba(255, 255, 255, 0.26); margin: 0 .5em; }
+  .btn {
+    font: inherit; font-size: 10.5px; color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 2px 8px; cursor: pointer; text-decoration: none; white-space: nowrap;
+  }
+  .btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+  /* The @ and the . are background images, so no part of the address sits in
+     the markup as text. Use: name<i class="at"></i>host<i class="dot"></i>tld */
+  .at, .dot {
+    display: inline-block; background-repeat: no-repeat;
+    background-size: contain; background-position: center;
+  }
+  .at {
+    width: .72em; height: 1.1em; vertical-align: -.24em; margin: 0 .02em;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAA2CAYAAABA3FA2AAAEqElEQVR42sWZW4hWVRTHf994mdHJGdFKRkfFsQwLGTLNRhMth0LwIcGHIMhyojeZtygQynyohHwpLUOjeoioHqRCuxCFWj6M4UQXsVLzNiNjTM2kzdX597Imjpt1Lt/5vrE/HD6+dfZe57/XvqzLLkiiBFQAi4E1QCOwAJgF3ABUAd3AJaATOAh8DhwFriZqlZTnaZD0oqROFY8zklokjY/TXyyZGZJekzSk0nFC0qJSSa2X9IfKi15J6/KQKkh6KUHxgKQDklolrZI0U1K1pImS6iU1SXpW0o8x/a9Kai6GVIWkd2KUXZa01aY0y+AqJD0qqcvRdUnS7KykXo0htF/SrJybZL6kXxydn2Uh1RpDaJtNKSU8cyV1O7qXJZG609ZKiKdLJBN9Njj698WRGi/pB6fD7jISGn3anU0z2Wu42SF0TNKEMSC1yflWcyFwM9XAGWB6RDYMLAG+p/yYDZwNZNsqAkFLQAjgzTEiBHAOOB/I5kRJFYDWoMEgsLXIDy0DXgbagAvAANBh/3cATfatUXQG/W+Mzu8KZ37fLWJ93C7pYEb38q2kRut3IHh3JGqph51Rv5HROhuBdmBlxvZNFsKsN0tGMSk60pMB4y5zDWkWapE0ktMh90s6FcjaRy01B2gIGO8HRjKMeHewRgAuA9uBpcA0C/ruAJ6xdTaKSmBeXJD3iDOKTSkWqpb0a8yZNi+h31RJHydY7z9LLXKscCTFSpuBWwLZaeBB+43DX8AG4FBaOPxJwHYwKVy1d2edUT5QZLTQn2SpcD39Zid5HNbaaRzF15YYZMVJYG9cNgJQ55y0SbjPkb2V40R/O45UFTA1kHelKLvXkX2Rg1Qb0OuRqnEad6coW+gMoiMHKdmh61oqRH+Cogl27kRxvgSnfMEjVek0HEhQMs2R9ZRAqscjNZKwATwUMsqyouB9vM9pWJWgxFtvNSWQqslKqjpByaD5tijqSyBV75HqcQ7KGSmKjgf/b7ZqS56pa4xbU2H0NzNF2WFH1pyD1NK46fO29K0pyr6KCfSKxcYkh7zXcYx1KQ75nJceFVnj6ktyyMccvksSRjgM7HTkrwM3ZbDQRHPGVUkO+ajz7v4Uxa9YNBHFfOBTYG5Cv1rgfWB1Wjw1TtKfgRl/zjAFyyUNxxTDXpB0l6RaSZMlLZT0VMy0XzN90Q986DRozEDsiRIShytWZnTXFMAHjiEfy7A+9gCPA0NF7rxhS+uOJ1WHK52aUa8F+lmT0UMZLfSdpMXWb1/S9CFph6Pg+SIrKfeYnjZJHVbeuWhZzk5Ja2wNx+oIqy51wKlgq/ZbUPc71wlhiNIJ7HIihj0p4Ux54ZhvSsy23TIGRbOibhzWOaRGLJP+30ghabtDbPB6EEt6Oc7q5Z7FnkvbQWNFCkmTJH2ZofB1XUlhfuujGGIjkt6TtLKcpAoZLyELVvvckpC5nLYs+TBwwqrMf1tMX2up2XTgNru4XGWVwl2lXkIuT7iNyoOfynEJiRX5n3TKkXmxOvxGnlN6yMy+AHjIoou+nGd3n03ltWulxIvtaO3ybmCF1TYbrH41xXLIAnAFuGi+tR34xhKQf0Jl/wIptLFQ08dD2QAAAABJRU5ErkJggg==");
+  }
+  .dot {
+    width: .22em; height: .22em; vertical-align: 0; margin: 0 .22em;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEAklEQVR42u2bO08VURDHf3vupcCQgBK0pDC+EDVoYQQbrU1oATV0JITwDfgAQEli7LDwgS2JNTRiYqFExRcmJCQ0PlBspIDdY3Fn4LDce9kLiOyeO8lmb2CzO/85M3PmzCOw1rJPFAA5YD3299PAVeAycB5oBuqBJsDIMxHwHfgNLALvgdfAS2A+9r48EAL7wniwDwKIAzfAdeAWcANoAY7s8t1/gA/ANPAMeC7C2jdB7FUAOWEC4ARwF7gDXIo9FwmjgVw4dyXr3PVZE3vmDfAIeAh8LcLDgQnAOIw2AQNAP3DcARHKc0ERsElJvxEJUH3PN+A+cE9MR78RVf4Fayu98s7vfmvtkt2kNWttaP8dhfINpSXhoRhvia7dgm+x1k7HgEf24CiKCWJaeKpYCElNwFWx26J69eL4cntQ8b2SmlpedpAB4HHMRHe05UrAD4sTqnc+/L/AK2+6G9QLb8PCayLfs5MGuOCfAN2HYNWTaMME0JNEE/IJwU8AXcAaUMPhJNWGNVmoQO4mts0mMgENbtIC3qUa4bVLeI/KaawpE+CsAyMpA19MCCOO2SbyARpZdYvdpw28S8p7j2jDtqgxLgB1GqeAV0CtE82lkTSKXAWuAF/iEaMp4vQs8ACoKxGzp4mU9zrBFD+PbBGAEfXoA9rL2U3KSP1Zu2ALXdxqAiqVBuAT0FhBoJQGUpVfBs4CKxofGEdKETAop7soQ+B1ISPBNuhsjQTWWrWHRuAzcDQDtl/KIQL8As6INmBEEhboBY6JjWQNvC5oKBh7BXNONcAAb4Fz8g9DNkkPSR+Bi0Ck+/41yd1lGbwb57QI5g0n2OkEDVknzU924kR5N0skIbOqBRuYA2vtSeCdhL02ow4wvhsEEh5fMECHgI88AI9zFqgFOgzQVi5hkGEtAGgzQCv+UquhUKvDEwcYPwQ2GzkA+UoNgbU29Gz1t8QExmPwAMZn8FvOyfhsAssexwHLhkJ6yFdaMRR6cvDMFBTrogHmPNaAOQPMZjQHmKReMGuAGTkaGk8coWa9VoEZAyxQyJHhkQAQzAu66lMepsSm3JzgpIcpsUm3MOJ1Wlxr5uO7bjZMnwDGBXOuWhrTEhHwAxhzSkhZIy35jQnWHGCr5fFYrvwnMJTBY7KW+4cEo3bCbOkRCpwukRkKHRVhBrpEFMMLCjWQnBMLVJukTAlVmafQT1NsBCZNpH1OfYJpm2mbEiqj/bajbDYdktIewVHBki+2u5VqlnbngCZS2C2qvD6l0PBZcr6oXLd42pqlS4Ev2zGeTxA5GXmRTUm7fE0l7fIm4dCSkReOOEMShylaDJ12+ZGk4CuZGsvsyIz3Q1Pej815PzhZHZ2tDk97Pj7/FwRyGrFQ4gLfAAAAAElFTkSuQmCC");
+  }
+
+  @media (max-width: 620px) {
+    .card dl > div { grid-template-columns: 70px minmax(0, 1fr); row-gap: 5px; }
+    .btn { grid-column: 2; justify-self: start; }
+  }
+
+  @media (max-width: 620px) {
+    .hero { height: clamp(420px, 80vh, 680px); }
+    .summary { max-width: none; }
+    /* the wide offset would drop the text onto the sun on a phone */
+    .intro { top: clamp(92px, 15vh, 150px); left: clamp(22px, 6vw, 44px); right: clamp(22px, 6vw, 44px); }
+    /* narrow screens crop into the bright part of the art, so the top of the
+       band is darkened harder to keep the text readable */
+    .hero::after {
+      background: linear-gradient(to bottom,
+        rgba(14, 14, 15, 0.94) 0%,
+        rgba(14, 14, 15, 0.86) 28%,
+        rgba(14, 14, 15, 0.45) 42%,
+        rgba(14, 14, 15, 0) 58%,
+        rgba(32, 23, 17, 0.45) 76%,
+        rgba(32, 23, 17, 0.9) 91%,
+        var(--seam) 98%,
+        var(--seam) 100%);
+    }
+  }
+
+  /* ====== lower half: blurred ridge behind the content ================= */
+  .lower { position: relative; overflow: hidden; flex: 1 0 auto; }
+  /* pages with no hero need clearance under the fixed bar */
+  .lower.page > .wrap { padding-top: 70px; }
+  .lower-bg {
+    position: absolute; top: 0; left: 0; right: 0;
+    aspect-ratio: 1400 / 2100; overflow: hidden; z-index: 0; background: var(--seam);
+  }
+  .lower-bg::before {
+    content: ""; position: absolute; inset: -2%;
+    background: url("../img/ridge.svg") center top / 100% auto no-repeat;
+    filter: blur(4px) brightness(1.04) saturate(1.1);
+  }
+  .lower-bg::after {
+    content: ""; position: absolute; inset: 0;
+    /* top fade in pixels so the handover is the same length whatever the
+       image height is; bottom fade in percent so it always lands on black */
+    background:
+      linear-gradient(to bottom,
+        var(--seam) 0,
+        rgba(32, 23, 17, 0.88) 90px,
+        rgba(32, 23, 17, 0.6) 210px,
+        rgba(32, 23, 17, 0.3) 340px,
+        rgba(32, 23, 17, 0.1) 460px,
+        rgba(32, 23, 17, 0) 580px),
+      linear-gradient(to bottom,
+        rgba(14, 14, 15, 0) 60%,
+        rgba(14, 14, 15, 0.72) 85%,
+        var(--bg) 100%);
+  }
+  .lower > .wrap { position: relative; z-index: 1; }
+  .wrap {
+    max-width: 1080px; margin: 0 auto;
+    padding: clamp(22px, 3.6vh, 48px) clamp(22px, 5vw, 48px) clamp(26px, 5vh, 56px);
+  }
+
+  /* ====== profile + latest post ======================================== */
+  .decks { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 16px; }
+  .card {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(18, 17, 16, 0.55);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .card > h2, .card-h {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    font-size: 10.5px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 8px 13px; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .card-h .tag { letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.4); }
+
+  .post { padding: 15px 16px 16px; display: grid; gap: 10px; }
+  .post h3 { margin: 0; font-size: 15px; font-weight: 400; color: #fff; }
+  .post p { color: rgba(255, 255, 255, 0.72); font-size: 11.5px; line-height: 1.9; }
+  .post .teaser { color: rgba(255, 255, 255, 0.78); }
+  .post .empty { color: rgba(255, 255, 255, 0.46); }
+  .meta-chip {
+    font-size: 10px; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.16); padding: 2px 7px;
+  }
+
+  /* ====== projects ===================================================== */
+  .sec-h {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; margin: clamp(20px, 3.2vh, 40px) 0 10px;
+  }
+  .sec-h h2 {
+    font-family: var(--display); font-weight: 100; font-size: clamp(28px, 4vw, 46px);
+    line-height: 1; letter-spacing: 0.06em; color: #fff; margin-left: var(--name-nudge);
+  }
+  .sec-h .count { font-size: 11px; color: rgba(255, 255, 255, 0.5); }
+
+  .proj-layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .index { position: sticky; top: 68px; }
+  .index ol { list-style: none; margin: 0; padding: 6px; }
+  .index a {
+    display: block; padding: 7px 9px; text-decoration: none;
+    border: 1px solid transparent; line-height: 1.5;
+  }
+  .index a:hover { background: rgba(255, 255, 255, 0.05); }
+  .index a[aria-current] { border-color: rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.06); }
+  .index .n { display: block; font-size: 11.5px; color: #fff; }
+  .index .d { display: block; font-size: 10.5px; color: rgba(255, 255, 255, 0.46); }
+
+  .proj-list { display: grid; gap: 16px; }
+  .proj-body { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 16px; padding: 14px; }
+  .proj-body figure { margin: 0; }
+  .proj-body img { width: 100%; height: 100%; max-height: 260px; object-fit: cover; display: block; background: #000; }
+  .proj-text { display: grid; gap: 9px; align-content: start; }
+  .proj-text h3 { margin: 0; font-size: 13.5px; font-weight: 400; color: #fff; }
+  .proj-text p { font-size: 11.5px; line-height: 1.9; color: rgba(255, 255, 255, 0.76); }
+  .proj-text .res { color: rgba(255, 255, 255, 0.62); }
+  .proj-text .res b { font-weight: 400; color: rgba(255, 255, 255, 0.45); margin-right: .6em; }
+  .stack {
+    display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px;
+    padding-top: 9px; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 10.5px;
+  }
+  .stack dt { color: rgba(255, 255, 255, 0.42); }
+  .stack dd { margin: 0; color: rgba(255, 255, 255, 0.72); }
+  .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ====== contact bar ================================================== */
+  .contactbar {
+    position: relative; z-index: 1; margin-top: auto; flex-shrink: 0;
+    padding: 0 clamp(14px, 4vw, 34px) clamp(14px, 4vw, 30px);
+  }
+  .contactbar .in {
+    max-width: 1080px; margin: 0 auto; padding: 9px 10px 9px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(18, 17, 16, 0.72);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .contactbar .lab {
+    font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .contactbar .items { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .contactbar .btn { padding: 5px 10px; }
+
+  /* ====== blog page ==================================================== */
+  .page-head { padding-bottom: 14px; }
+  .page-head h1 {
+    font-family: var(--display); font-weight: 100; font-size: clamp(32px, 5.6vw, 60px);
+    line-height: 1; letter-spacing: 0.08em; color: #fff; margin: 0 0 0 var(--name-nudge);
+  }
+  .blog-body { display: grid; gap: 14px; }
+
+  @media (max-width: 860px) {
+    .decks, .proj-layout { grid-template-columns: minmax(0, 1fr); }
+    .index { position: static; }
+    .proj-body { grid-template-columns: minmax(0, 1fr); }
+    .proj-body img { max-height: 200px; }
+  }
+
+
+  /* ====== blog log ===================================================== */
+  .log { border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(18, 17, 16, 0.55);
+         backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .log-h, .log-row {
+    display: grid; grid-template-columns: 54px 104px minmax(0, 1fr);
+    gap: 14px; padding: 9px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .log-h {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+  }
+  .log-row:last-child { border-bottom: 0; }
+  .log-row .no { font-size: 11px; color: rgba(255, 255, 255, 0.4); font-variant-numeric: tabular-nums; }
+  .log-row .date { font-size: 11px; color: rgba(255, 255, 255, 0.56); font-variant-numeric: tabular-nums; }
+  a.log-row { text-decoration: none; }
+  a.log-row:hover { background: rgba(255, 255, 255, 0.05); }
+  a.log-row:hover .t { text-decoration: underline; text-decoration-color: rgba(255,255,255,.4); }
+  .log-row .entry { display: block; }
+  .log-row .entry .t { display: block; margin-bottom: 3px; font-size: 13px; color: #fff; }
+  .log-row .entry .x {
+    display: block; font-size: 11px; line-height: 1.8; color: rgba(255, 255, 255, 0.62);
+  }
+  .log-empty { padding: 16px 14px; font-size: 11.5px; color: rgba(255, 255, 255, 0.46); }
+  .empty-note { padding: 12px 11px; font-size: 11px; color: rgba(255, 255, 255, 0.4); }
+  code { font-family: var(--mono); color: rgba(255, 255, 255, 0.78); }
+
+  @media (max-width: 620px) {
+    .log-h { display: none; }
+    .log-row { grid-template-columns: 40px minmax(0, 1fr); row-gap: 2px; }
+    .log-row .date { grid-column: 2; }
+    .log-row .entry { grid-column: 2; }
+  }
+
+  /* ====== a single post ================================================ */
+  /* the page heading gives way to the post when one is open */
+  body.reading .page-head { display: none; }
+  .backrow { margin: 0 0 14px; }
+  .post-view {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(18, 17, 16, 0.6);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 54px) clamp(30px, 5vw, 56px);
+  }
+  .post-view h1 {
+    font-family: var(--display); font-weight: 100; line-height: 1.05;
+    font-size: clamp(27px, 4.2vw, 44px); letter-spacing: 0.02em;
+    color: #fff; margin: 0; text-wrap: balance;
+  }
+  .post-meta {
+    display: flex; gap: 36px; flex-wrap: wrap; margin: 22px 0 0;
+    padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .post-meta dt {
+    font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4); margin-bottom: 4px;
+  }
+  .post-meta dd { margin: 0; font-size: 11.5px; color: rgba(255, 255, 255, 0.82); }
+  .post-body { padding-top: 22px; display: grid; gap: 17px; max-width: 72ch; }
+  .post-body p { font-size: 12.5px; line-height: 2.05; color: rgba(255, 255, 255, 0.84); }
+  .post-fig { margin: 8px 0; }
+  .post-fig img { display: block; width: 100%; max-width: 560px; height: auto; border-radius: 2px; }
+  .post-fig.light img { background: #fff; padding: 12px; }
+  .post-fig figcaption {
+    margin-top: 8px; font-size: 10.5px; color: rgba(255, 255, 255, 0.45);
+  }

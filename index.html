@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaleb Kim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..400&amp;family=Geist+Mono:wght@100..500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="#top">Kaleb Kim<span>.dev</span></a>
+  <nav class="nav">
+    <a href="#projects">Projects</a>
+    <a href="blog.html">Blog</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="hero" id="top">
+  <canvas class="art" id="hero-art" role="img" aria-label="Animated ASCII art: the sun setting into a sea of cloud"></canvas>
+  <div class="intro">
+    <h1 class="name">Kaleb Kim</h1>
+    <p class="role">System Design Engineer<span>|</span>Computer Engineering Student</p>
+    <div class="summary">
+      <p>I&rsquo;m a computer engineering student pursuing embedded systems, and a system design intern at Lockheed Martin. I work with systems that use hardware and software development for the aerospace and defense industry.</p>
+      <p class="cta">Interested in C/C++ or embedded systems? Let&rsquo;s talk.</p>
+    </div>
+    <div class="acts">
+      <a href="#projects">Explore projects</a>
+      <a href="blog.html">Blog</a>
+    </div>
+  </div>
+</div>
+
+<main class="lower">
+  <div class="lower-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="decks" id="decks"></div>
+    <section id="projects"></section>
+  </div>
+</main>
+
+<footer class="contactbar" id="contact"></footer>
+
+<script src="js/content.js"></script>
+<script src="js/cloud-sea.js"></script>
+<script src="js/hero.js"></script>
+<script>window.initHeroArt();</script>
+<script src="js/render.js"></script>
+</body>
+</html>
