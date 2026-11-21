@@ -1,0 +1,9 @@
+{
+  // Serves this repo as a static site on Cloudflare Workers.
+  // There is no Worker script and no build step — the files are served as-is.
+  "name": "portfolio",
+  "compatibility_date": "2026-11-21",
+  "assets": {
+    "directory": "./"
+  }
+}
