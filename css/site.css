@@ -445,7 +445,10 @@
   .sec-h {
     display: flex; align-items: baseline; justify-content: space-between;
     gap: 16px; flex-wrap: wrap; margin: clamp(16px, 2.6vh, 32px) 0 0;
-    padding-bottom: 11px; border-bottom: var(--rule);
+    /* measured from the heading's baseline, not its box: line-height 1
+       leaves the box edge below the letters, so an even split here would
+       sit the rule nearer the cards than the word */
+    padding-bottom: 6px; border-bottom: var(--rule);
   }
   .proj-layout { margin-top: 12px; }
   .sec-h h2 {
