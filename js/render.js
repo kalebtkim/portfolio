@@ -51,7 +51,7 @@
     o.excerpt = o.excerpt || cut(text[0] || "", 190);
     /* the home panel shows a longer run of the real writing, clearly trimmed */
     o.teaser = cut(text.join(" "), 430);
-    o.blurb = o.blurb || (text[0] || "").split(/(?<=\.)\s/)[0].slice(0, 90);
+    o.blurb = o.blurb || cut((text[0] || "").split(/(?<=\.)\s/)[0], 54);
     if (!o.read) {
       var words = text.join(" ").split(/\s+/).length;
       o.read = Math.max(1, Math.round(words / 200)) + " min read";
@@ -129,7 +129,7 @@
           return '<article class="card" id="' + esc(p.id) + '">' +
             '<div class="card-h"><span>' + esc(p.name) + "</span>" +
             (p.tag ? '<span class="tag">' + esc(p.tag) + "</span>" : "<span></span>") + "</div>" +
-            '<div class="proj-body">' +
+            '<div class="proj-body' + (p.image ? "" : " solo") + '">' +
             (p.image ? '<figure><img src="' + esc(p.image) + '" alt="" loading="lazy"></figure>' : "") +
             '<div class="proj-text"><h3>' + esc(p.title || p.name) + "</h3>" + paras(p.body) +
             (p.result ? '<p class="res"><b>Result</b>' + esc(p.result) + "</p>" : "") +
