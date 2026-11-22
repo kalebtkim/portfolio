@@ -50,7 +50,7 @@
     };
     o.excerpt = o.excerpt || cut(text[0] || "", 190);
     /* the home panel shows a longer run of the real writing, clearly trimmed */
-    o.teaser = cut(text.join(" "), 430);
+    o.teaser = cut(text.join(" "), 330);
     o.blurb = o.blurb || cut((text[0] || "").split(/(?<=\.)\s/)[0], 54);
     if (!o.read) {
       var words = text.join(" ").split(/\s+/).length;
