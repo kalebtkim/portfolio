@@ -445,14 +445,15 @@
   .sec-h {
     display: flex; align-items: baseline; justify-content: space-between;
     gap: 16px; flex-wrap: wrap; margin: clamp(16px, 2.6vh, 32px) 0 0;
-    padding-bottom: 12px; border-bottom: var(--rule);
+    padding-bottom: 11px; border-bottom: var(--rule);
   }
-  .proj-layout { margin-top: 14px; }
+  .proj-layout { margin-top: 12px; }
   .sec-h h2 {
     font-family: var(--display); font-weight: 100; font-size: clamp(28px, 4vw, 46px);
-    line-height: 1; letter-spacing: 0.06em; color: #fff; margin-left: var(--name-nudge);
+    line-height: 1; letter-spacing: 0.06em; color: #fff;
+    margin: 0 0 0 var(--name-nudge);
   }
-  .sec-h .count { font-size: 12px; color: rgba(255, 255, 255, 0.5); }
+  .sec-h .count { font-size: 12px; line-height: 1; color: rgba(255, 255, 255, 0.5); }
 
   .proj-layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 14px; align-items: start; }
   .index { position: sticky; top: 70px; }
