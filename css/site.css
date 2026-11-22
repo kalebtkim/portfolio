@@ -7,6 +7,9 @@
     --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
     /* every block on the page shares this measure and these gutters, so the
        contact bar lines up with the cards above it at any width */
+    /* panels are lifted off the page with shadow instead of outlined */
+    --lift: 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(0, 0, 0, 0.42);
+    --rule: 1px solid rgba(255, 255, 255, 0.10);
     --measure: 1320px;
     --gutter: clamp(18px, 5vw, 48px);
     --display: "Geist", "Helvetica Neue", Arial, sans-serif;
@@ -32,7 +35,7 @@
   /* min-height, not height: the intro is in normal flow, so a narrow window
      makes the hero taller rather than slicing the buttons off the bottom */
   .hero {
-    position: relative; min-height: clamp(460px, 72vh, 720px);
+    position: relative; min-height: clamp(430px, 60vh, 640px);
     overflow: hidden; display: flex; align-items: flex-start;
   }
   .art {
@@ -57,7 +60,7 @@
   /* name and summary sit over the art, top left */
   .intro {
     position: relative; z-index: 2; width: 100%;
-    padding: clamp(130px, 24vh, 250px) var(--gutter) clamp(44px, 7vh, 80px)
+    padding: clamp(112px, 20vh, 210px) var(--gutter) clamp(30px, 4vh, 54px)
              clamp(56px, 12vw, 190px);
   }
   /* lines stop well short of the page edge rather than running across it */
@@ -123,15 +126,15 @@
   }
   .summary .cta { color: #fff; letter-spacing: 0.03em; }
 
-  .acts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+  .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
   .acts a {
     font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: #fff; text-decoration: none; padding: 9px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    background: rgba(14, 12, 11, 0.35);
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    color: #fff; text-decoration: none; padding: 10px 18px;
+    background: rgba(14, 12, 11, 0.52); box-shadow: var(--lift);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: background 140ms ease;
   }
-  .acts a:hover { border-color: #fff; background: rgba(255, 255, 255, 0.1); }
+  .acts a:hover { background: rgba(255, 255, 255, 0.16); }
 
   /* photo band below the hero: blurred like the art, with its own gradient
      at each edge so it emerges from the page background and sinks back in */
@@ -141,7 +144,7 @@
   .card dl > div {
     display: grid; grid-template-columns: 96px minmax(0, 1fr) auto;
     gap: 12px; align-items: center; padding: 9px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: var(--rule);
   }
   .card dl > div:last-child { border-bottom: 0; }
   .card dt { font-size: 11.5px; color: rgba(255, 255, 255, 0.46); }
@@ -151,10 +154,11 @@
   .card dd .sep { color: rgba(255, 255, 255, 0.26); margin: 0 .5em; }
   .btn {
     font: inherit; font-size: 11.5px; color: rgba(255, 255, 255, 0.78);
-    background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.16);
-    padding: 2px 8px; cursor: pointer; text-decoration: none; white-space: nowrap;
+    background: rgba(255, 255, 255, 0.08); border: 0;
+    padding: 4px 10px; cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: background 120ms ease, color 120ms ease;
   }
-  .btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+  .btn:hover { color: #fff; background: rgba(255, 255, 255, 0.16); }
   /* The @ and the . are background images, so no part of the address sits in
      the markup as text. Use: name<i class="at"></i>host<i class="dot"></i>tld */
   .at, .dot {
@@ -229,24 +233,23 @@
   .lower > .wrap { position: relative; z-index: 1; flex: 1 0 auto; }
   .wrap {
     max-width: var(--measure); margin: 0 auto;
-    padding: clamp(22px, 3.6vh, 48px) var(--gutter) clamp(26px, 5vh, 56px);
+    padding: clamp(16px, 2.2vh, 30px) var(--gutter) clamp(26px, 5vh, 56px);
   }
 
   /* ====== profile + latest post ======================================== */
   .decks {
-    display: grid; grid-template-columns: minmax(0, 580px) minmax(0, 1fr);
-    gap: 18px; align-items: start;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px; align-items: start;
   }
   .card {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(18, 17, 16, 0.55);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    background: rgba(18, 17, 16, 0.62); box-shadow: var(--lift);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
   .card > h2, .card-h {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
     font-size: 11px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
     color: rgba(255, 255, 255, 0.5);
-    padding: 10px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 16px; border-bottom: var(--rule);
   }
   .card-h .tag { letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.4); }
 
@@ -257,13 +260,13 @@
   .post .empty { color: rgba(255, 255, 255, 0.46); }
   .meta-chip {
     font-size: 11px; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.16); padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.07); padding: 3px 8px;
   }
 
   /* ====== projects ===================================================== */
   .sec-h {
     display: flex; align-items: baseline; justify-content: space-between;
-    gap: 16px; flex-wrap: wrap; margin: clamp(20px, 3.2vh, 40px) 0 10px;
+    gap: 16px; flex-wrap: wrap; margin: clamp(16px, 2.6vh, 32px) 0 10px;
   }
   .sec-h h2 {
     font-family: var(--display); font-weight: 100; font-size: clamp(28px, 4vw, 46px);
@@ -271,22 +274,22 @@
   }
   .sec-h .count { font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
-  .proj-layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .proj-layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 14px; align-items: start; }
   .index { position: sticky; top: 70px; }
   .index ol { list-style: none; margin: 0; padding: 6px; }
   .index a {
-    display: block; padding: 7px 9px; text-decoration: none;
-    border: 1px solid transparent; line-height: 1.5;
+    display: block; padding: 8px 11px; text-decoration: none;
+    border-left: 2px solid transparent; line-height: 1.5;
   }
   .index a:hover { background: rgba(255, 255, 255, 0.05); }
-  .index a[aria-current] { border-color: rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.06); }
+  .index a[aria-current] { border-left-color: rgba(255, 255, 255, 0.55); background: rgba(255, 255, 255, 0.07); }
   .index .n { display: block; font-size: 13px; color: #fff; }
   .index .d {
     display: block; font-size: 11.5px; color: rgba(255, 255, 255, 0.46);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
-  .proj-list { display: grid; gap: 16px; }
+  .proj-list { display: grid; gap: 14px; }
   /* left column is the thumbnail slot; set `image:` on a project to fill it */
   .proj-body { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 18px; padding: 16px; }
   .proj-body.solo { grid-template-columns: minmax(0, 1fr); }
@@ -303,7 +306,7 @@
   .proj-text .res b { font-weight: 400; color: rgba(255, 255, 255, 0.45); margin-right: .6em; }
   .stack {
     display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px;
-    padding-top: 11px; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 11px; border-top: var(--rule);
     font-size: 11.5px;
   }
   .stack dt { color: rgba(255, 255, 255, 0.42); }
@@ -320,8 +323,7 @@
     max-width: calc(var(--measure) - 2 * var(--gutter));
     margin: 0 auto; padding: 10px 12px 10px 20px;
     display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(18, 17, 16, 0.62);
+    background: rgba(18, 17, 16, 0.68); box-shadow: var(--lift);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   }
   .contactbar .lab {
@@ -352,12 +354,12 @@
 
 
   /* ====== blog log ===================================================== */
-  .log { border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(18, 17, 16, 0.55);
-         backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .log { background: rgba(18, 17, 16, 0.62); box-shadow: var(--lift);
+         backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .log-h, .log-row {
     display: grid; grid-template-columns: 58px 112px minmax(0, 1fr);
     gap: 16px; padding: 12px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: var(--rule);
   }
   .log-h {
     font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
@@ -391,8 +393,8 @@
   body.reading .page-head { display: none; }
   .backrow { margin: 0 0 14px; }
   .post-view {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(18, 17, 16, 0.6);
+    box-shadow: var(--lift);
+    background: rgba(18, 17, 16, 0.66);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 54px) clamp(30px, 5vw, 56px);
   }
@@ -403,7 +405,7 @@
   }
   .post-meta {
     display: flex; gap: 36px; flex-wrap: wrap; margin: 22px 0 0;
-    padding-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 20px; border-bottom: var(--rule);
   }
   .post-meta dt {
     font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase;
