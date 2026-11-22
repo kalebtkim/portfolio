@@ -5,6 +5,10 @@
     --accent: #f38020;
     --seam: #201711;   /* warm tone where the art hands off to the ridge */
     --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+    /* every block on the page shares this measure and these gutters, so the
+       contact bar lines up with the cards above it at any width */
+    --measure: 1320px;
+    --gutter: clamp(18px, 5vw, 48px);
     --display: "Geist", "Helvetica Neue", Arial, sans-serif;
     /* optical nudge pulling the name back into line with the text under it;
        retune this one value if the glyph edge looks off */
@@ -25,7 +29,12 @@
   #projects, .proj-list .card, #top { scroll-margin-top: 66px; }
 
   /* the art, and a gradient that fades it into the page */
-  .hero { position: relative; height: clamp(420px, 72vh, 720px); overflow: hidden; }
+  /* min-height, not height: the intro is in normal flow, so a narrow window
+     makes the hero taller rather than slicing the buttons off the bottom */
+  .hero {
+    position: relative; min-height: clamp(460px, 72vh, 720px);
+    overflow: hidden; display: flex; align-items: flex-start;
+  }
   .art {
     position: absolute; inset: 0; display: block; width: 100%; height: 100%;
     font-family: var(--mono);
@@ -47,11 +56,12 @@
 
   /* name and summary sit over the art, top left */
   .intro {
-    position: absolute; z-index: 2;
-    top: clamp(140px, 25vh, 250px); left: clamp(56px, 12vw, 190px);
-    /* lines stop at the middle of the page rather than running across it */
-    right: 50%;
+    position: relative; z-index: 2; width: 100%;
+    padding: clamp(130px, 24vh, 250px) var(--gutter) clamp(44px, 7vh, 80px)
+             clamp(56px, 12vw, 190px);
   }
+  /* lines stop well short of the page edge rather than running across it */
+  .role, .summary { max-width: 600px; }
   .name {
     font-family: var(--display); font-weight: 100;
     font-size: clamp(30px, 8vw, 88px); line-height: 1;
@@ -169,7 +179,7 @@
     .hero { height: clamp(420px, 80vh, 680px); }
     .summary { max-width: none; }
     /* the wide offset would drop the text onto the sun on a phone */
-    .intro { top: clamp(92px, 15vh, 150px); left: clamp(22px, 6vw, 44px); right: clamp(22px, 6vw, 44px); }
+    .intro { padding: clamp(92px, 15vh, 150px) var(--gutter) clamp(36px, 6vh, 56px) var(--gutter); }
     /* narrow screens crop into the bright part of the art, so the top of the
        band is darkened harder to keep the text readable */
     .hero::after {
@@ -218,12 +228,15 @@
   }
   .lower > .wrap { position: relative; z-index: 1; flex: 1 0 auto; }
   .wrap {
-    max-width: 1320px; margin: 0 auto;
-    padding: clamp(22px, 3.6vh, 48px) clamp(22px, 5vw, 48px) clamp(26px, 5vh, 56px);
+    max-width: var(--measure); margin: 0 auto;
+    padding: clamp(22px, 3.6vh, 48px) var(--gutter) clamp(26px, 5vh, 56px);
   }
 
   /* ====== profile + latest post ======================================== */
-  .decks { display: grid; grid-template-columns: minmax(0, 580px) minmax(0, 1fr); gap: 18px; }
+  .decks {
+    display: grid; grid-template-columns: minmax(0, 580px) minmax(0, 1fr);
+    gap: 18px; align-items: start;
+  }
   .card {
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(18, 17, 16, 0.55);
@@ -274,10 +287,15 @@
   }
 
   .proj-list { display: grid; gap: 16px; }
-  .proj-body { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 16px; padding: 14px; }
+  /* left column is the thumbnail slot; set `image:` on a project to fill it */
+  .proj-body { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 18px; padding: 16px; }
   .proj-body.solo { grid-template-columns: minmax(0, 1fr); }
   .proj-body figure { margin: 0; }
-  .proj-body img { width: 100%; height: 100%; max-height: 260px; object-fit: cover; display: block; background: #000; }
+  .proj-body img {
+    width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
+    display: block; background: #0a0a0b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
   .proj-text { display: grid; gap: 9px; align-content: start; }
   .proj-text h3 { margin: 0; font-size: 16px; font-weight: 400; color: #fff; }
   .proj-text p { font-size: 13px; line-height: 1.95; color: rgba(255, 255, 255, 0.78); }
@@ -295,10 +313,12 @@
   /* ====== contact bar ================================================== */
   .contactbar {
     position: relative; z-index: 1; margin-top: auto; flex-shrink: 0;
-    padding: 0 clamp(22px, 5vw, 48px) clamp(22px, 4vw, 44px);
+    padding: 0 var(--gutter) clamp(22px, 4vw, 44px);
   }
   .contactbar .in {
-    max-width: 1320px; margin: 0 auto; padding: 10px 12px 10px 20px;
+    /* the cards sit inside .wrap's gutters, so the bar must too */
+    max-width: calc(var(--measure) - 2 * var(--gutter));
+    margin: 0 auto; padding: 10px 12px 10px 20px;
     display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
     border: 1px solid rgba(255, 255, 255, 0.18);
     background: rgba(18, 17, 16, 0.62);
@@ -319,11 +339,15 @@
   }
   .blog-body { display: grid; gap: 14px; }
 
+  /* two panels side by side need real room; below this they stack */
+  @media (max-width: 1040px) {
+    .decks { grid-template-columns: minmax(0, 1fr); }
+  }
   @media (max-width: 860px) {
-    .decks, .proj-layout { grid-template-columns: minmax(0, 1fr); }
+    .proj-layout { grid-template-columns: minmax(0, 1fr); }
     .index { position: static; }
     .proj-body { grid-template-columns: minmax(0, 1fr); }
-    .proj-body img { max-height: 200px; }
+    .proj-body img { aspect-ratio: 16 / 9; }
   }
 
 
