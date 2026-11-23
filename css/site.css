@@ -302,7 +302,7 @@
     pointer-events: none; z-index: 0;
   }
   .stars i {
-    position: absolute; inset: 0; display: block; filter: blur(0.35px);
+    position: absolute; inset: 0; display: block; filter: blur(1.4px);
     /* promote each layer so the opacity animation runs on the GPU; without
        this a phone can quietly drop it rather than repaint 360 gradients */
     will-change: opacity; transform: translateZ(0);
