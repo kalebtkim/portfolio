@@ -76,8 +76,12 @@
     if (!el) { return; }
 
     var rows = (S.profile || []).map(function (r) {
+      var mark = r[3]
+        ? '<img class="mark" src="' + esc(r[3]) + '" alt="' + esc(r[4] || "") + '">'
+        : "<span></span>";
       return "<div><dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) +
-        (r[2] ? '<span class="sep">|</span><span class="sub">' + esc(r[2]) + "</span>" : "") + "</dd><span></span></div>";
+        (r[2] ? '<span class="sep">|</span><span class="sub">' + esc(r[2]) + "</span>" : "") +
+        "</dd>" + mark + "</div>";
     }).join("");
 
     var linkRows = (S.links || []).map(function (l) {

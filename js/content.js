@@ -43,6 +43,10 @@ window.SITE = {
 
   /* the PROFILE panel: [label, value, sub] — sub is the dimmer part after | */
   profile: [
+    /* A row is [label, value] and may add two more:
+         [label, value, "dim trailing text", "img/logo.svg", "alt text"]
+       Pass "" for the dim text if you only want the logo. Any colour of
+       logo works, it is flattened to white and set to one height. */
     ["Discipline", "B.S. Computer Engineering"],
     ["Focus", "Embedded systems"],
     ["Role", "System design intern"]
