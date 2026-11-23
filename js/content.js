@@ -77,7 +77,7 @@ window.SITE = {
       body: `
 An F´ component reading a 9-DoF IMU over I2C, publishing calibrated angular rate and acceleration as telemetry at 10 Hz.
 
-Bus error paths are handled explicitly. Device timeout, short reads, and all-zero returns are each reported as distinct events rather than retried in place.
+Bus error paths are handled explicitly. Device timeout, short reads, and readings of all zeros are each reported as distinct events rather than retried in place.
 `
     },
 
@@ -90,7 +90,7 @@ Bus error paths are handled explicitly. Device timeout, short reads, and all-zer
       body: `
 A passive F´ component fusing gyroscope, accelerometer and magnetometer data into a quaternion attitude estimate.
 
-A complementary filter integrates angular rate at high frequency and corrects against the gravity and magnetic north reference at low frequency, bounding gyro drift without tracking sensor noise. Filter gain is exposed as a ground-tunable parameter.
+A complementary filter integrates angular rate at high frequency and corrects against the gravity and magnetic north reference at low frequency, bounding gyro drift without tracking sensor noise. Filter gain is exposed as a parameter tunable from the ground.
 `
     },
 
@@ -101,7 +101,7 @@ A complementary filter integrates angular rate at high frequency and corrects ag
       blurb: "Attitude control",
       stack: "C++, F´, PWM, control theory",
       body: `
-Quaternion-error PD control driving a reaction wheel to a commanded attitude.
+PD control on quaternion error, driving a reaction wheel to a commanded attitude.
 
 The implementation is split across two components: a passive component holding the control law, and an active component owning the PWM output. The separation allows unit testing of the control law on the host with no hardware attached.
 
@@ -128,14 +128,14 @@ Safe mode persists until cleared by ground command. Each transition emits an eve
       name: "HITL rig",
       tag: "Planned",
       title: "Closing the loop against simulated dynamics",
-      blurb: "Hardware-in-the-loop testing",
-      stack: "C++, F´, Python, rigid-body dynamics",
+      blurb: "Hardware in the loop testing",
+      stack: "C++, F´, Python, rigid body dynamics",
       body: `
-A host-side simulator closing the control loop around an unmodified flight binary.
+A simulator running on the host, closing the control loop around an unmodified flight binary.
 
-Rigid-body dynamics are integrated on the host, synthesized IMU samples are returned to the flight software over a serial link, and wheel commands are fed back into the simulation.
+Rigid body dynamics are integrated on the host, synthesized IMU samples are returned to the flight software over a serial link, and wheel commands are fed back into the simulation.
 
-Substitution occurs at the driver boundary, so the flight build contains no simulation-specific code. Available test cases include a 30 deg/s tumble at separation, injected gyro bias, wheel saturation mid-slew, and batched randomized initial conditions.
+Substitution occurs at the driver boundary, so the flight build contains no code specific to the simulation. Available test cases include a 30 deg/s tumble at separation, injected gyro bias, wheel saturation during a slew, and batched randomized initial conditions.
 `
     }
 
