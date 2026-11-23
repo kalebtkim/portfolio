@@ -154,18 +154,21 @@
   .card dl { margin: 0; }
   .card dl > div {
     display: grid; grid-template-columns: 96px minmax(0, 1fr) auto;
-    gap: 12px; align-items: center; padding: 9px 16px;
+    gap: 12px; align-items: center; padding: 9px 16px; min-height: 50px;
     border-bottom: var(--rule);
   }
   .card dl > div:last-child { border-bottom: 0; }
   /* A logo on a profile row. Square badges keep their own colour and are
      set to one box, so they line up as a set whatever they contain. */
   .card dl .mark {
-    display: block; width: 25px; height: 25px;
+    display: block; width: 32px; height: 32px;
     object-fit: contain; object-position: right center;
     opacity: 0.88; transition: opacity 140ms ease;
   }
   .card dl > div:hover .mark { opacity: 1; }
+  /* the trailing element sat 16px from the card edge but only 9px from
+     the top and bottom of its row; this evens the inset up */
+  .card dl > div > *:last-child { justify-self: end; margin-right: -6px; }
   .card dt { font-size: 11.5px; color: rgba(255, 255, 255, 0.58); }
   .card dd { margin: 0; font-size: 13px; color: #fff; }
   .card dd.addr { white-space: nowrap; }
