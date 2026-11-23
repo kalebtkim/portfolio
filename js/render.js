@@ -228,6 +228,44 @@
     spy(list);
   }
 
+  /* Mark the nav link for wherever you are. A link to another file is
+     current only when that file IS this page; an in-page anchor becomes
+     current while its section is in view, the same way the project index
+     works. Runs on both pages from the one function. */
+  function navspy() {
+    var links = [].slice.call(document.querySelectorAll(".nav a"));
+    if (!links.length) { return; }
+
+    var here = location.pathname.split("/").pop() || "index.html";
+    var hashed = [];
+
+    links.forEach(function (a) {
+      var href = a.getAttribute("href") || "";
+      var cut = href.indexOf("#");
+      var file = (cut === -1 ? href : href.slice(0, cut)).split("/").pop();
+      var id = cut === -1 ? "" : href.slice(cut + 1);
+
+      if (file && file !== here) { return; }       /* another page entirely */
+      if (!id) { a.setAttribute("aria-current", "page"); return; }
+      var sec = document.getElementById(id);
+      if (sec) { hashed.push({ a: a, sec: sec, id: id }); }
+    });
+
+    if (!hashed.length || !window.IntersectionObserver) { return; }
+
+    var seen = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
+      var on = hashed.filter(function (h) { return seen[h.id]; })[0];
+      hashed.forEach(function (h) {
+        if (on && h === on) { h.a.setAttribute("aria-current", "true"); }
+        else { h.a.removeAttribute("aria-current"); }
+      });
+    }, { rootMargin: "-64px 0px -55% 0px" });
+
+    hashed.forEach(function (h) { io.observe(h.sec); });
+  }
+
   /* highlight the index entry for whichever card is in view */
   function spy(list) {
     if (!window.IntersectionObserver || !list.length) { return; }
@@ -352,4 +390,5 @@
   blog();
   contact();
   copyButtons();
+  navspy();
 })();

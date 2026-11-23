@@ -95,8 +95,31 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 10;
     display: flex; align-items: center; justify-content: space-between;
     gap: 16px; height: 52px; padding: 0 clamp(16px, 5vw, 72px);
-    background: linear-gradient(180deg, rgba(24, 24, 23, 0.40), rgba(12, 12, 12, 0.26));
-    backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+  /* The blur and tint sit on a taller layer that fades out underneath
+     the bar, rather than on .bar itself. A backdrop-filter stops dead at
+     its own element's edge, so a 52px bar drew a hard step straight
+     across the full width of the page — a visible line with nothing
+     casting it. Masking the layer lets the blur taper instead. It stays
+     off .bar so the wordmark and links are not faded along with it, and
+     pointer-events are off so the overhang does not eat clicks. */
+  .bar::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0;
+    height: 86px; pointer-events: none; z-index: -1;
+    background: linear-gradient(180deg,
+      rgba(24, 24, 23, 0.40) 0,
+      rgba(12, 12, 12, 0.26) 52%,
+      rgba(12, 12, 12, 0) 100%);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0, #000 48%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0, #000 48%, transparent 100%);
+  }
+  /* whichever page or section you are on, lit the way hover lights it */
+  .nav a[aria-current] { color: #fff; }
+  .nav a[aria-current]:not(:hover)::after {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.07);
   }
   .brand {
     color: #fff; font-size: 14px; font-weight: 200; letter-spacing: 0.04em;
@@ -825,13 +848,16 @@
 
   .proj-layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 14px; align-items: start; }
   .index { position: sticky; top: 70px; }
-  .index ol { list-style: none; margin: 0; padding: 6px; }
+  /* No padding on the list and none on the card, so a highlighted entry
+     fills the full width of the panel edge to edge. The 16px inset on
+     the link lines its text up with the INDEX header above it. */
+  .index ol { list-style: none; margin: 0; padding: 0; }
   .index a {
-    display: block; padding: 8px 11px; text-decoration: none;
-    border-left: 2px solid transparent; line-height: 1.5;
+    display: block; padding: 9px 16px; text-decoration: none;
+    line-height: 1.5;
   }
   .index a:hover { background: rgba(255, 255, 255, 0.05); }
-  .index a[aria-current] { border-left-color: rgba(255, 255, 255, 0.55); background: rgba(255, 255, 255, 0.07); }
+  .index a[aria-current] { background: rgba(255, 255, 255, 0.09); }
   .index .n { display: block; font-size: 13px; color: #fff; }
   .index .d {
     display: block; font-size: 11.5px; color: rgba(255, 255, 255, 0.58);
