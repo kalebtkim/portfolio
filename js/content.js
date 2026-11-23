@@ -48,7 +48,7 @@ window.SITE = {
        Pass "" for the dim text if you only want the logo. Any colour of
        logo works, it is flattened to white and set to one height. */
     ["Discipline", "B.S. Computer Engineering", "", "img/tamu.png", "Texas A&M University"],
-    ["Focus", "Embedded systems"],
+    ["Focus", "Flight software and embedded systems"],
     ["Role", "System design intern", "", "img/lockheed.png", "Lockheed Martin"]
   ],
 
