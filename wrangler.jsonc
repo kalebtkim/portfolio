@@ -3,6 +3,21 @@
   // There is no Worker script and no build step — the files are served as-is.
   "name": "portfolio",
   "compatibility_date": "2026-11-21",
+
+  // The live domain. A custom_domain route serves every path on that
+  // hostname from this Worker, and Cloudflare manages the DNS record for
+  // it — so there is no A or CNAME to add by hand. Both the apex and www
+  // are listed so neither one dead-ends.
+  "routes": [
+    { "pattern": "kalebkim.dev", "custom_domain": true },
+    { "pattern": "www.kalebkim.dev", "custom_domain": true }
+  ],
+
+  // Declaring routes would otherwise switch the portfolio.*.workers.dev
+  // URL off. Kept on as a fallback while DNS settles; set to false once
+  // the domain is serving and you want a single canonical URL.
+  "workers_dev": true,
+
   "assets": {
     "directory": "./"
   }
