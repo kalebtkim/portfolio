@@ -761,6 +761,21 @@
       0 64px 128px rgba(0, 0, 0, 0.30);
   }
 
+  /* The reflection above is sized in percentages, so it shrinks with the
+     surface it sits on. On a card that reads as a soft wash; on a button
+     barely 38px tall the whole falloff finishes within 40px of the corner
+     and it reads as a white dot instead. The buttons get their own light:
+     one broad source centred ABOVE the button, so they catch only its
+     gentle shoulder and never its hot middle. Must stay after the shared
+     rule — same specificity, so source order is what decides. */
+  .acts a {
+    background:
+      radial-gradient(150% 420% at 18% -60%,
+        rgba(255, 255, 255, 0.075) 0, rgba(255, 255, 255, 0.022) 46%,
+        rgba(255, 255, 255, 0) 78%),
+      linear-gradient(180deg, rgba(22, 22, 21, 0.24), rgba(9, 9, 9, 0.32));
+  }
+
 
   /* 3. the specular rim: a 1px border drawn from a gradient, so it catches
      light at the top-left and again at the bottom-right */
