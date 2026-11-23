@@ -274,26 +274,69 @@
     hashed.forEach(function (h) { io.observe(h.sec); });
   }
 
-  /* highlight the index entry for whichever card is in view */
+  /* Highlight the index entry for whichever card you are reading.
+
+     This used to ask an IntersectionObserver for the first card touching
+     a band near the top of the screen, which got the last entries wrong:
+     a tall card only has to clip the band by a pixel to keep winning
+     over the card actually filling the screen, and a card near the foot
+     of the page may never reach the band at all before scrolling stops.
+
+     So it measures instead: the current card is whichever one covers
+     the most of the screen. */
   function spy(list) {
-    if (!window.IntersectionObserver || !list.length) { return; }
     var links = {};
     [].forEach.call(document.querySelectorAll(".index a"), function (a) {
       links[a.getAttribute("href").slice(1)] = a;
     });
-    var seen = {};
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
-      var current = list.filter(function (p) { return seen[p.id]; })[0];
-      Object.keys(links).forEach(function (id) {
-        if (current && id === current.id) { links[id].setAttribute("aria-current", "true"); }
-        else { links[id].removeAttribute("aria-current"); }
+    var nodes = list.map(function (p) {
+      return { id: p.id, el: document.getElementById(p.id) };
+    }).filter(function (n) { return n.el; });
+    if (!nodes.length) { return; }
+
+    var TOP = 120;   /* the fixed bar, plus a little breathing room */
+
+    /* Whichever card covers the most screen is the one being read. Not
+       "the first card past a line": the last cards never cross one,
+       because the page stops scrolling while they are still low on the
+       screen, which is why they could never be selected. Area has no
+       such dead zone, and needs no special case at the foot of the
+       page. */
+    function pick() {
+      var vh = window.innerHeight, best = null, bestSeen = -1;
+
+      nodes.forEach(function (n) {
+        var r = n.el.getBoundingClientRect();
+        var seen = Math.min(r.bottom, vh) - Math.max(r.top, TOP);
+        if (seen > bestSeen) { bestSeen = seen; best = n; }
       });
-    }, { rootMargin: "-64px 0px -55% 0px" });
-    list.forEach(function (p) {
-      var n = document.getElementById(p.id);
-      if (n) { io.observe(n); }
-    });
+
+      var id = best ? best.id : nodes[0].id;
+
+      /* Area alone still cannot reach the final entry when the last card
+         is shorter than the one above it: at the foot of the page both
+         are fully on screen and the taller one always wins. Once there
+         is nothing left to scroll, you are looking at the last card. */
+      if (window.innerHeight + window.pageYOffset >=
+          document.documentElement.scrollHeight - 2) {
+        id = nodes[nodes.length - 1].id;
+      }
+
+      Object.keys(links).forEach(function (k) {
+        if (k === id) { links[k].setAttribute("aria-current", "true"); }
+        else { links[k].removeAttribute("aria-current"); }
+      });
+    }
+
+    var queued = false;
+    function onScroll() {
+      if (queued) { return; }
+      queued = true;
+      window.requestAnimationFrame(function () { queued = false; pick(); });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    pick();
   }
 
   /* --- blog page -------------------------------------------------------- */

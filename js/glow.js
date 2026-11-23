@@ -7,7 +7,9 @@
 (function () {
   "use strict";
 
-  var SEL = ".brand, .nav a, .acts a, .index a, a.log-row, .btn";
+  /* The top bar is not in this list on purpose: it is text only, with
+     no lit panel behind it. */
+  var SEL = ".acts a, .index a, a.log-row, .btn";
 
   document.addEventListener("pointermove", function (e) {
     var el = e.target && e.target.closest ? e.target.closest(SEL) : null;

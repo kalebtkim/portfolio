@@ -115,12 +115,9 @@
     -webkit-mask-image: linear-gradient(180deg, #000 0, #000 48%, transparent 100%);
     mask-image: linear-gradient(180deg, #000 0, #000 48%, transparent 100%);
   }
-  /* whichever page or section you are on, lit the way hover lights it */
+  /* Whichever page or section you are on, lit exactly the way hover
+     lights it: the text goes white, and nothing else changes. */
   .nav a[aria-current] { color: #fff; }
-  .nav a[aria-current]:not(:hover)::after {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.07);
-  }
   .brand {
     color: #fff; font-size: 14px; font-weight: 200; letter-spacing: 0.04em;
     text-decoration: none; white-space: nowrap;
@@ -1067,9 +1064,13 @@
      pointer has ever been over an element, and with JS off nothing
      moves — the light simply fades in where it sits.
 
-     Deliberately only these six selectors. Nothing non-interactive gets
-     a glow, or the page stops telling you what is clickable. */
-  .brand, .nav a, .acts a, .index a, a.log-row, .btn {
+     The top bar is deliberately left out. A lit panel behind a wordmark
+     or a nav link reads as a button, and the bar sits over everything
+     while you scroll, so it stays text only — see the rules below it.
+
+     Nothing non-interactive gets a glow either, or the page stops
+     telling you what is clickable. */
+  .acts a, .index a, a.log-row, .btn {
     position: relative;
     --gr: 150px;
     transition: color 160ms ease, background 160ms ease,
@@ -1077,15 +1078,13 @@
   }
   /* The light has to be sized against the thing it is sitting on, or it
      reads as a spotlight instead of a wash. A blog row is 926px wide and
-     a nav link is 63px, so one fixed radius cannot serve both. Roughly
-     half the element's width keeps a visible falloff across it either
-     way. Overrides come after the shared rule on purpose: same
-     specificity, so source order is what decides. */
-  .brand, .nav a { --gr: 90px; }
-  .index a       { --gr: 210px; }
-  a.log-row      { --gr: 440px; }
-  .brand::after, .nav a::after, .acts a::after,
-  .index a::after, a.log-row::after, .btn::after {
+     a project card entry is 220px, so one fixed radius cannot serve
+     both. Roughly half the element's width keeps a visible falloff
+     across it either way. Overrides come after the shared rule on
+     purpose: same specificity, so source order is what decides. */
+  .index a  { --gr: 210px; }
+  a.log-row { --gr: 440px; }
+  .acts a::after, .index a::after, a.log-row::after, .btn::after {
     content: ""; position: absolute; inset: 0; pointer-events: none;
     border-radius: inherit;
     background: radial-gradient(circle var(--gr, 150px) at var(--gx, 50%) var(--gy, 50%),
@@ -1094,11 +1093,19 @@
       rgba(255, 255, 255, 0) 70%);
     opacity: 0; transition: opacity 260ms ease;
   }
-  .brand:hover::after, .nav a:hover::after, .acts a:hover::after,
-  .index a:hover::after, a.log-row:hover::after, .btn:hover::after { opacity: 1; }
+  .acts a:hover::after, .index a:hover::after,
+  a.log-row:hover::after, .btn:hover::after { opacity: 1; }
 
-  /* The brand and the nav links are bare text with no box of their own.
-     Bleeding the light past their edges gives it somewhere to pool —
-     done on the pseudo-element's inset rather than with padding, so the
-     flex gap between the nav links does not change by a pixel. */
-  .brand::after, .nav a::after { inset: -8px -10px; border-radius: 4px; }
+  /* The hero clips its overflow to hold the art in, which also sliced
+     these buttons' cast shadow straight across the page: the shared
+     panel shadow reaches 192px below its element, and there are only
+     38px between the buttons and the bottom of the hero. A small button
+     never needed a 128px cast anyway. Keep the deepest layer inside
+     that gap and there is no edge to see. */
+  .acts a {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.30),
+                0 8px 20px rgba(0, 0, 0, 0.26);
+  }
+
+  /* The bar: text brightening only, no panel behind it. */
+  .brand, .nav a { transition: color 160ms ease; }
