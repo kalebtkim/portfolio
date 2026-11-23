@@ -14,7 +14,7 @@
     --rule: 1px solid rgba(255, 255, 255, 0.10);
     /* the gap below the hero buttons and the gap above Projects are the
        same measure, split either side of the hero's bottom edge */
-    --stack-gap: clamp(28px, 3.7vh, 46px);
+    --stack-gap: clamp(46px, 6vh, 76px);
     --measure: 1320px;
     --gutter: clamp(18px, 5vw, 48px);
     --display: "Geist", "Helvetica Neue", Arial, sans-serif;
@@ -64,9 +64,10 @@
 
   /* name and summary sit over the art, top left */
   .intro {
-    position: relative; z-index: 2; width: 100%;
+    position: relative; z-index: 2;
+    width: 100%; max-width: var(--measure); margin: 0 auto;
     padding: clamp(100px, 17vh, 180px) var(--gutter)
-             calc(var(--stack-gap) * 0.7) clamp(56px, 12vw, 190px);
+             calc(var(--stack-gap) * 0.7) var(--gutter);
   }
   /* lines stop well short of the page edge rather than running across it */
   .role, .summary { max-width: 600px; }
@@ -191,7 +192,7 @@
     .hero { height: clamp(420px, 80vh, 680px); }
     .summary { max-width: none; }
     /* the wide offset would drop the text onto the sun on a phone */
-    .intro { padding: clamp(92px, 15vh, 150px) var(--gutter) clamp(36px, 6vh, 56px) var(--gutter); }
+    .intro { padding-top: clamp(92px, 15vh, 150px); }
     /* narrow screens crop into the bright part of the art, so the top of the
        band is darkened harder to keep the text readable */
     .hero::after {
@@ -215,10 +216,10 @@
   /* fills the whole lower half, so the picture runs under the contact bar */
   .lower-bg { position: absolute; inset: 0; overflow: hidden; z-index: 0; background: var(--bg); }
   .lower-bg::before {
-    content: ""; position: absolute; top: -2%; left: -2%; right: -2%;
+    content: ""; position: absolute; top: -4%; left: -4%; right: -4%;
     aspect-ratio: 1400 / 2100;
     background: url("../img/ridge.svg") center top / 100% auto no-repeat;
-    filter: blur(4px) brightness(1.04) saturate(1.1);
+    filter: blur(10px) brightness(1.04) saturate(1.1);
     /* the picture fades out at its own bottom edge, not at the page's, so a
        long projects page lands on black and a short one never shows a band */
     -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 460px), transparent 100%);
