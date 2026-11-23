@@ -8,6 +8,14 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   };
+  /* 2026-11-21 becomes 11/21/2026. Dates stay ISO in content.js so they
+     still sort, and only the display changes. Split rather than parsed:
+     new Date("2026-11-21") reads as UTC midnight, which anywhere west of
+     Greenwich renders as the day before. */
+  var usDate = function (v) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(v == null ? "" : v).trim());
+    return m ? m[2] + "/" + m[3] + "/" + m[1] : String(v == null ? "" : v);
+  };
   var paras = function (b) {
     return blocks(b).map(function (p) {
       if (p && p.img) {
@@ -167,7 +175,7 @@
     var post = prepped(S.posts)[0];
     var postCard = post
       ? '<div class="card-h"><span>Latest post</span>' +
-        '<span class="meta-chip">' + esc(post.date) + "</span></div>" +
+        '<span class="meta-chip">' + esc(usDate(post.date)) + "</span></div>" +
         '<div class="post"><h3>' + esc(post.title) + "</h3>" +
         '<p class="teaser">' + esc(post.teaser) + "</p>" +
         '<p><a class="btn" href="blog.html#' + esc(post.id) + '">Read post</a></p></div>'
@@ -310,7 +318,7 @@
         var n = list.length - i;
         return '<a class="log-row" href="#' + esc(p.id) + '">' +
           '<span class="no">' + (n < 10 ? "0" : "") + n + "</span>" +
-          '<span class="date">' + esc(p.date) + "</span>" +
+          '<span class="date">' + esc(usDate(p.date)) + "</span>" +
           '<span class="entry"><span class="t">' + esc(p.title) + "</span>" +
           "<span class=\"x\">" + esc(p.excerpt || "") + "</span></span></a>";
       }).join("") + "</div>";
@@ -320,7 +328,7 @@
       el.innerHTML = '<p class="backrow"><a class="btn" href="blog.html">&#8592; Back to blog</a></p>' +
         '<article class="post-view"><h1>' + esc(p.title) + "</h1>" +
         '<dl class="post-meta">' +
-        "<div><dt>Published</dt><dd>" + esc(p.date) + "</dd></div>" +
+        "<div><dt>Published</dt><dd>" + esc(usDate(p.date)) + "</dd></div>" +
         (S.author ? "<div><dt>Author</dt><dd>" + esc(S.author) + "</dd></div>" : "") +
         (p.read ? "<div><dt>Length</dt><dd>" + esc(p.read) + "</dd></div>" : "") +
         "</dl><div class=\"post-body\">" + paras(p.body && p.body.length ? p.body : p.excerpt) +

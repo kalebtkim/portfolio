@@ -3,7 +3,7 @@
 
    ADD A BLOG POST       copy this into the posts list below
        {
-         date: "2026-12-01",
+         date: "2026-12-01",            // keep YYYY-MM-DD, shows as 12/01/2026
          title: "Title of the post",
          body: `
    First paragraph.
