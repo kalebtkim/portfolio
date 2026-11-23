@@ -64,6 +64,77 @@ window.SITE = {
 
   projects: [
 
+    /* ---- CubeSat ADCS on F´ — six stages, each shipped on its own ----
+       These are stubs. As each one gets built, fill in `result`, add a
+       `links` row to the repo, and drop a screenshot in as `image`. */
+
+    {
+      name: "ImuDriver",
+      tag: "In progress",
+      title: "An I2C sensor driver for F´",
+      stack: "C++ · F´ · FPP · I2C · GoogleTest",
+      blurb: "A 9-DoF IMU driver component for NASA JPL's flight software framework",
+      body: `
+Stage 1 of a six-stage CubeSat attitude control build.
+
+An F´ component that owns the I2C transaction with a 9-DoF IMU, publishes calibrated body rates and accelerations as telemetry at 10 Hz, and reports every bus error path as its own event rather than a silent retry.
+
+Write-up to follow once it runs on hardware.
+`
+    },
+
+    {
+      name: "AttitudeEstimator",
+      tag: "Planned",
+      title: "Attitude estimation from a 9-DoF IMU",
+      stack: "C++ · F´ · quaternion math",
+      blurb: "A complementary filter fusing gyro, accelerometer and magnetometer into a quaternion",
+      body: `
+Stage 2. A passive F´ component that integrates angular rate at high frequency and corrects against the gravity and magnetic-north reference at low frequency, so the estimate neither drifts nor chases sensor noise.
+
+Filter gain is a ground-tunable parameter rather than a compiled constant.
+`
+    },
+
+    {
+      name: "AdcsController",
+      tag: "Planned",
+      title: "Quaternion PD attitude control on hardware",
+      stack: "C++ · F´ · PWM · control theory",
+      blurb: "A reaction wheel that slews the board to a commanded attitude and holds it",
+      body: `
+Stage 3. Quaternion-error PD control, split across a passive component holding the control law and an active one owning the PWM pin, so the law can be unit tested without hardware attached.
+
+Wheel speed is telemetered and momentum saturation raises an event, which stage 4 then acts on.
+`
+    },
+
+    {
+      name: "FaultProtection",
+      tag: "Planned",
+      title: "Fault protection for an attitude control loop",
+      stack: "C++ · F´ · state machines",
+      blurb: "Detects a failed sensor mid-manoeuvre and parks the system in safe mode",
+      body: `
+Stage 4. A state machine watching sensor health, wheel saturation and attitude divergence, with a persistence count on every condition so a single outlier cannot trip it.
+
+Entering safe mode stops the control loop and stays there until the ground commands recovery. Every transition is an event carrying the condition that tripped and the value that breached.
+`
+    },
+
+    {
+      name: "HITL rig",
+      tag: "Planned",
+      title: "Hardware-in-the-loop testing for flight software",
+      stack: "C++ · F´ · Python · rigid-body dynamics",
+      blurb: "The unmodified flight binary, flying a simulated spacecraft over a serial link",
+      body: `
+Stage 5. A host-side rigid-body integrator synthesises IMU samples from a simulated attitude and consumes the wheel commands, closing the loop with no real sensor and no real wheel.
+
+The swap happens at the driver boundary, so the flight build contains no simulation-specific code. That makes the cases worth testing reachable: a 30 deg/s tumble on separation, an injected gyro bias, a saturated wheel mid-slew, and a hundred randomised initial attitudes run unattended.
+`
+    }
+
   ],
 
   posts: [
