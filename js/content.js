@@ -75,7 +75,7 @@ window.SITE = {
       blurb: "Sensor driver",
       stack: "C++, F´, FPP, I2C, GoogleTest",
       body: `
-An F´ component that reads a 9-DoF IMU over I2C and publishes calibrated angular rate and acceleration as telemetry at 10 Hz.
+An F´ component reading a 9-DoF IMU over I2C, publishing calibrated angular rate and acceleration as telemetry at 10 Hz.
 
 Bus error paths are handled explicitly. Device timeout, short reads, and all-zero returns are each reported as distinct events rather than retried in place.
 `
@@ -88,9 +88,9 @@ Bus error paths are handled explicitly. Device timeout, short reads, and all-zer
       blurb: "Sensor fusion",
       stack: "C++, F´, quaternion math",
       body: `
-A passive F´ component that fuses gyroscope, accelerometer and magnetometer data into a quaternion attitude estimate.
+A passive F´ component fusing gyroscope, accelerometer and magnetometer data into a quaternion attitude estimate.
 
-A complementary filter integrates angular rate at high frequency and corrects against the gravity and magnetic north reference at low frequency, which bounds gyro drift without tracking sensor noise. Filter gain is exposed as a ground-tunable parameter.
+A complementary filter integrates angular rate at high frequency and corrects against the gravity and magnetic north reference at low frequency, bounding gyro drift without tracking sensor noise. Filter gain is exposed as a ground-tunable parameter.
 `
     },
 
@@ -103,7 +103,7 @@ A complementary filter integrates angular rate at high frequency and corrects ag
       body: `
 Quaternion-error PD control driving a reaction wheel to a commanded attitude.
 
-The implementation is split across two components: a passive one holding the control law, and an active one owning the PWM output. The separation allows the control law to be unit tested on the host with no hardware attached.
+The implementation is split across two components: a passive component holding the control law, and an active component owning the PWM output. The separation allows unit testing of the control law on the host with no hardware attached.
 
 A single reaction wheel provides control about one axis.
 `
@@ -116,11 +116,11 @@ A single reaction wheel provides control about one axis.
       blurb: "Safe mode and limit monitoring",
       stack: "C++, F´, state machines",
       body: `
-A state machine that monitors system health and places the control loop in safe mode when a fault is detected.
+A state machine monitoring system health and placing the control loop in safe mode on fault detection.
 
-Monitored conditions include sensor timeout, reaction wheel momentum saturation, and attitude divergence. Each condition requires a configurable number of consecutive failures before it triggers, so a single outlying sample cannot cause a false trip.
+Monitored conditions include sensor timeout, reaction wheel momentum saturation, and attitude divergence. Each condition requires a configurable number of consecutive failures before triggering, preventing a false trip from a single outlying sample.
 
-Safe mode persists until cleared by ground command. Each transition emits an event carrying the triggering condition and the value that breached its limit.
+Safe mode persists until cleared by ground command. Each transition emits an event carrying the triggering condition and the breaching value.
 `
     },
 
@@ -131,11 +131,11 @@ Safe mode persists until cleared by ground command. Each transition emits an eve
       blurb: "Hardware-in-the-loop testing",
       stack: "C++, F´, Python, rigid-body dynamics",
       body: `
-A host-side simulator that closes the control loop around an unmodified flight binary.
+A host-side simulator closing the control loop around an unmodified flight binary.
 
 Rigid-body dynamics are integrated on the host, synthesized IMU samples are returned to the flight software over a serial link, and wheel commands are fed back into the simulation.
 
-The substitution occurs at the driver boundary, so the flight build contains no simulation-specific code. This makes test cases available that the bench cannot produce: a 30 deg/s tumble at separation, injected gyro bias, wheel saturation mid-slew, and batched randomized initial conditions.
+Substitution occurs at the driver boundary, so the flight build contains no simulation-specific code. Available test cases include a 30 deg/s tumble at separation, injected gyro bias, wheel saturation mid-slew, and batched randomized initial conditions.
 `
     }
 

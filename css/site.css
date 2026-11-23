@@ -1033,3 +1033,36 @@
   .post-fig figcaption {
     margin-top: 9px; font-size: 11.5px; color: rgba(255, 255, 255, 0.58);
   }
+
+  /* ====== cursor glow on interactive things ============================
+     One soft light that follows the pointer over anything clickable, and
+     a matching fade on every hover change. --gx/--gy are written by
+     js/glow.js; the 50% defaults keep the light centred before the
+     pointer has ever been over an element, and with JS off nothing
+     moves — the light simply fades in where it sits.
+
+     Deliberately only these six selectors. Nothing non-interactive gets
+     a glow, or the page stops telling you what is clickable. */
+  .brand, .nav a, .acts a, .index a, a.log-row, .btn {
+    position: relative;
+    transition: color 160ms ease, background 160ms ease,
+                filter 160ms ease, box-shadow 160ms ease;
+  }
+  .brand::after, .nav a::after, .acts a::after,
+  .index a::after, a.log-row::after, .btn::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(circle 110px at var(--gx, 50%) var(--gy, 50%),
+      rgba(255, 255, 255, 0.10) 0,
+      rgba(255, 255, 255, 0.038) 40%,
+      rgba(255, 255, 255, 0) 70%);
+    opacity: 0; transition: opacity 260ms ease;
+  }
+  .brand:hover::after, .nav a:hover::after, .acts a:hover::after,
+  .index a:hover::after, a.log-row:hover::after, .btn:hover::after { opacity: 1; }
+
+  /* The brand and the nav links are bare text with no box of their own.
+     Bleeding the light past their edges gives it somewhere to pool —
+     done on the pseudo-element's inset rather than with padding, so the
+     flex gap between the nav links does not change by a pixel. */
+  .brand::after, .nav a::after { inset: -8px -10px; border-radius: 4px; }
