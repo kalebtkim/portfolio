@@ -13,21 +13,18 @@
     --lift-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 3px 10px rgba(0, 0, 0, 0.38);
 
     /* ---- dark liquid glass -------------------------------------------
-       Four optics do the work: a deep backdrop blur, a saturation bloom
-       of whatever sits behind, a lit top edge with shade on the bottom so
-       the panel reads as a slab with thickness, and a diagonal sheen. */
-    --glass: blur(26px) saturate(155%) brightness(1.04);
-    --glass-rim:
-      inset 0 1px 0 rgba(255, 255, 255, 0.17),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.42),
-      inset 1px 0 0 rgba(255, 255, 255, 0.055),
-      inset -1px 0 0 rgba(255, 255, 255, 0.03);
-    --glass-fill:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0,
-                              rgba(255, 255, 255, 0.018) 26%,
-                              rgba(255, 255, 255, 0) 54%),
-      linear-gradient(180deg, rgba(40, 39, 36, 0.44) 0, rgba(13, 13, 12, 0.40) 100%);
-    --glass-radius: 10px;
+       What makes it glass rather than a tinted panel is the EDGE. Three
+       pieces, all on the .glass class below:
+         1. the body: a light blur with a big saturation bloom, and a fill
+            that is nearly clear in the middle and denser at the rim
+         2. a lens ring: a band inside the border that blurs and brightens
+            the backdrop again, standing in for light bent by the thick
+            part of the glass
+         3. a specular rim: a 1px gradient border, bright where a light
+            above-left would catch it and again on the opposite edge */
+    --glass-radius: 20px;
+    --glass-body: blur(16px) saturate(185%) brightness(1.06);
+    --glass-lens: blur(7px) saturate(150%) brightness(1.5);
     --rule: 1px solid rgba(255, 255, 255, 0.10);
     /* the gap below the hero buttons and the gap above Projects are the
        same measure, split either side of the hero's bottom edge */
@@ -153,17 +150,12 @@
   .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
   .acts a {
     font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: #fff; text-decoration: none; padding: 11px 19px; border-radius: 8px;
-    background: linear-gradient(180deg, rgba(48, 44, 40, 0.52), rgba(12, 11, 10, 0.46));
-    box-shadow: var(--glass-rim), var(--lift);
-    backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%);
-    transition: background 160ms ease, box-shadow 160ms ease;
+    color: #fff; text-decoration: none; padding: 12px 22px;
+    --glass-radius: 999px;
+    transition: filter 160ms ease;
   }
-  .acts a:hover {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.07));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.4), var(--lift);
-  }
+  .acts a::before { padding: 7px; }
+  .acts a:hover { filter: brightness(1.45); }
 
   /* photo band below the hero: blurred like the art, with its own gradient
      at each edge so it emerges from the page background and sinks back in */
@@ -716,12 +708,57 @@
     display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px; align-items: stretch;
   }
-  .card {
-    background: var(--glass-fill);
-    box-shadow: var(--glass-rim), var(--lift);
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    border-radius: var(--glass-radius); overflow: hidden;
+  /* every glass surface is built from these three layers */
+  .card, .log, .post-view, .contactbar .in, .acts a {
+    position: relative; isolation: isolate;
+    border-radius: var(--glass-radius);
+    background:
+      radial-gradient(130% 150% at 50% -20%,
+        rgba(255, 255, 255, 0.07) 0, rgba(255, 255, 255, 0.015) 42%,
+        rgba(255, 255, 255, 0) 72%),
+      linear-gradient(180deg, rgba(22, 22, 21, 0.26), rgba(9, 9, 9, 0.34));
+    backdrop-filter: var(--glass-body); -webkit-backdrop-filter: var(--glass-body);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.07),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.30),
+      0 2px 4px rgba(0, 0, 0, 0.4), 0 22px 54px rgba(0, 0, 0, 0.46);
   }
+
+  /* 2. the lens ring: a 16px band just inside the edge, blurred and lifted
+     again, so the backdrop appears to bend as it passes through the thick
+     part of the pane. The two masks cancel out everything but the band. */
+  .card::before, .log::before, .post-view::before, .contactbar .in::before, .acts a::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    border-radius: inherit; pointer-events: none;
+    /* 10px keeps the inner corner at a 10px radius instead of 4px, so the
+       bevel follows the outer curve; the blur feathers its inner edge */
+    padding: 10px;
+    backdrop-filter: var(--glass-lens); -webkit-backdrop-filter: var(--glass-lens);
+    filter: blur(3px);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0.5;
+  }
+
+  /* 3. the specular rim: a 1px border drawn from a gradient, so it catches
+     light at the top-left and again at the bottom-right */
+  .card::after, .log::after, .post-view::after, .contactbar .in::after, .acts a::after {
+    content: ""; position: absolute; inset: 0; z-index: 1;
+    border-radius: inherit; pointer-events: none;
+    padding: 1px;
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.72) 0,
+      rgba(255, 255, 255, 0.14) 22%,
+      rgba(255, 255, 255, 0.05) 48%,
+      rgba(255, 255, 255, 0.18) 74%,
+      rgba(255, 255, 255, 0.58) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+
+  .card { overflow: hidden; }
   .card > h2, .card-h {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
     font-size: 11px; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
@@ -816,10 +853,6 @@
     max-width: calc(var(--measure) - 2 * var(--gutter));
     margin: 0 auto; padding: 10px 12px 10px 20px;
     display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-    background: var(--glass-fill);
-    box-shadow: var(--glass-rim), var(--lift);
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    border-radius: var(--glass-radius);
   }
   .contactbar .lab {
     font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
@@ -849,12 +882,7 @@
 
 
   /* ====== blog log ===================================================== */
-  .log {
-    background: var(--glass-fill);
-    box-shadow: var(--glass-rim), var(--lift);
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    border-radius: var(--glass-radius); overflow: hidden;
-  }
+  .log { overflow: hidden; }
   .log-h, .log-row {
     display: grid; grid-template-columns: 58px 112px minmax(0, 1fr);
     gap: 16px; padding: 12px 16px;
@@ -895,10 +923,6 @@
   body.reading .page-head { display: none; }
   .backrow { margin: 0 0 14px; }
   .post-view {
-    box-shadow: var(--glass-rim), var(--lift);
-    background: var(--glass-fill);
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    border-radius: var(--glass-radius);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 54px) clamp(30px, 5vw, 56px);
   }
