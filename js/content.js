@@ -69,69 +69,83 @@ window.SITE = {
        `links` row to the repo, and drop a screenshot in as `image`. */
 
     {
-      name: "ImuDriver",
-      tag: "In progress",
-      title: "An I2C sensor driver for F´",
+      name: "IMU driver",
+      tag: "Planned",
+      title: "Reading a 9-DoF IMU over I2C",
+      blurb: "Stage 1, the sensor driver",
       stack: "C++ · F´ · FPP · I2C · GoogleTest",
-      blurb: "A 9-DoF IMU driver component for NASA JPL's flight software framework",
       body: `
-Stage 1 of a six-stage CubeSat attitude control build.
+First of six stages. Haven't started it yet.
 
-An F´ component that owns the I2C transaction with a 9-DoF IMU, publishes calibrated body rates and accelerations as telemetry at 10 Hz, and reports every bus error path as its own event rather than a silent retry.
+The IMU is the part that tells the satellite which way it's facing and how fast it's turning. This component, ImuDriver, talks to it over I2C, turns the raw counts into real units, and publishes them ten times a second so the ground can watch them live.
 
-Write-up to follow once it runs on hardware.
+Most of the actual work here is error handling. The sensor can drop off the bus, come back with half a reading, or hand you zeros that look perfectly valid. The driver has to catch all of that instead of quietly passing garbage up the stack.
 `
     },
 
     {
-      name: "AttitudeEstimator",
+      name: "Attitude estimator",
       tag: "Planned",
-      title: "Attitude estimation from a 9-DoF IMU",
+      title: "Working out which way the board is pointing",
+      blurb: "Stage 2, sensor fusion",
       stack: "C++ · F´ · quaternion math",
-      blurb: "A complementary filter fusing gyro, accelerometer and magnetometer into a quaternion",
       body: `
-Stage 2. A passive F´ component that integrates angular rate at high frequency and corrects against the gravity and magnetic-north reference at low frequency, so the estimate neither drifts nor chases sensor noise.
+Stage two. Not built yet.
 
-Filter gain is a ground-tunable parameter rather than a compiled constant.
+The gyro tells you how fast you're rotating. That's accurate for a few seconds and then it drifts. The accelerometer and magnetometer tell you where down and north are, which is right on average but jumps around sample to sample. A complementary filter leans on the gyro for the fast stuff and on the other two to pull the drift back out.
+
+What comes out is a quaternion you can actually trust. The filter gain is tunable from the ground, so I can adjust it while the thing is running instead of recompiling and reflashing every time I want to try a number.
 `
     },
 
     {
-      name: "AdcsController",
+      name: "Control loop",
       tag: "Planned",
-      title: "Quaternion PD attitude control on hardware",
+      title: "Pointing the board with a reaction wheel",
+      blurb: "Stage 3, the controller",
       stack: "C++ · F´ · PWM · control theory",
-      blurb: "A reaction wheel that slews the board to a commanded attitude and holds it",
       body: `
-Stage 3. Quaternion-error PD control, split across a passive component holding the control law and an active one owning the PWM pin, so the law can be unit tested without hardware attached.
+Stage three. Not built yet.
 
-Wheel speed is telemetered and momentum saturation raises an event, which stage 4 then acts on.
+This is the part that moves something. You give it a direction you want the board to face, it works out how far off it currently is, and it spins up a reaction wheel to get there and hold.
+
+It's two components instead of one. The control law is pure math, so it gets tested on my laptop with no hardware attached. The wheel driver owns a PWM pin and can't be. Keeping them apart is the whole reason the math is testable.
+
+One wheel only controls one axis. Three would be the real thing, but I don't need three to show the loop closes.
 `
     },
 
     {
-      name: "FaultProtection",
+      name: "Fault protection",
       tag: "Planned",
-      title: "Fault protection for an attitude control loop",
+      title: "Catching a dead sensor mid-maneuver",
+      blurb: "Stage 4, safe mode",
       stack: "C++ · F´ · state machines",
-      blurb: "Detects a failed sensor mid-manoeuvre and parks the system in safe mode",
       body: `
-Stage 4. A state machine watching sensor health, wheel saturation and attitude divergence, with a persistence count on every condition so a single outlier cannot trip it.
+Stage four. Not built yet.
 
-Entering safe mode stops the control loop and stays there until the ground commands recovery. Every transition is an event carrying the condition that tripped and the value that breached.
+Pull the IMU wire halfway through a turn and a naive system keeps driving the wheel on data that went stale a second ago. This one notices, stops, and tells the ground exactly what tripped and what the value was.
+
+It watches for the sensor going quiet, the wheel running out of room to absorb momentum, and the attitude drifting the wrong way. Every check has to fail several times in a row before it counts, because one noisy reading tripping the whole system is worse than not having the check at all.
+
+Once it's in safe mode it stays there until I command it out. Letting it recover on its own just means it flips back and forth forever.
 `
     },
 
     {
       name: "HITL rig",
       tag: "Planned",
-      title: "Hardware-in-the-loop testing for flight software",
+      title: "Flying the software against a simulated satellite",
+      blurb: "Stage 5, hardware in the loop",
       stack: "C++ · F´ · Python · rigid-body dynamics",
-      blurb: "The unmodified flight binary, flying a simulated spacecraft over a serial link",
       body: `
-Stage 5. A host-side rigid-body integrator synthesises IMU samples from a simulated attitude and consumes the wheel commands, closing the loop with no real sensor and no real wheel.
+Stage five, the last one. Not built yet.
 
-The swap happens at the driver boundary, so the flight build contains no simulation-specific code. That makes the cases worth testing reachable: a 30 deg/s tumble on separation, an injected gyro bias, a saturated wheel mid-slew, and a hundred randomised initial attitudes run unattended.
+Instead of rotating a board on my desk, the flight software runs against a satellite that doesn't exist. A program on my laptop does the physics, makes up the sensor readings that satellite would be producing, and takes the wheel commands back.
+
+The point is testing the cases I can't produce by hand. Tumbling at 30 degrees a second right after it separates from the rocket. A gyro with a bias I injected on purpose. A wheel that saturates halfway through a turn. I can also leave a hundred random starting orientations running overnight and count how many of them settle.
+
+The flight code has no idea any of this is happening. The swap happens down at the driver level, so what I'm testing is the same build that would actually fly.
 `
     }
 
