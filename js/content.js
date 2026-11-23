@@ -43,9 +43,9 @@ window.SITE = {
 
   /* the PROFILE panel: [label, value, sub] — sub is the dimmer part after | */
   profile: [
-    ["Discipline", "B.S. Computer Engineering", "Texas A&M University"],
-    ["Focus", "Embedded systems", "C/C++, RTOS, HITL"],
-    ["Role", "System design intern", "Lockheed Martin"]
+    ["Discipline", "B.S. Computer Engineering"],
+    ["Focus", "Embedded systems"],
+    ["Role", "System design intern"]
   ],
 
   /* The address is kept in three pieces and only joined when someone presses

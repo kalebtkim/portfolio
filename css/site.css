@@ -22,9 +22,9 @@
             part of the glass
          3. a specular rim: a 1px gradient border, bright where a light
             above-left would catch it and again on the opposite edge */
-    --glass-radius: 20px;
+    --glass-radius: 0px;
     --glass-body: blur(16px) saturate(185%) brightness(1.06);
-    --glass-lens: blur(7px) saturate(150%) brightness(1.5);
+    --glass-lens: blur(8px) saturate(165%) brightness(1.65);
     --rule: 1px solid rgba(255, 255, 255, 0.10);
     /* the gap below the hero buttons and the gap above Projects are the
        same measure, split either side of the hero's bottom edge */
@@ -151,7 +151,6 @@
   .acts a {
     font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
     color: #fff; text-decoration: none; padding: 12px 22px;
-    --glass-radius: 999px;
     transition: filter 160ms ease;
   }
   .acts a::before { padding: 7px; }
@@ -176,7 +175,7 @@
   .btn {
     font: inherit; font-size: 11.5px; color: rgba(255, 255, 255, 0.78);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.055));
-    border: 0; border-radius: 6px;
+    border: 0;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.34), var(--lift-sm);
     backdrop-filter: blur(12px) saturate(150%); -webkit-backdrop-filter: blur(12px) saturate(150%);
@@ -713,14 +712,21 @@
     position: relative; isolation: isolate;
     border-radius: var(--glass-radius);
     background:
+      /* a window reflection caught in the top-left corner */
+      radial-gradient(60% 90% at 6% 2%,
+        rgba(255, 255, 255, 0.13) 0, rgba(255, 255, 255, 0.03) 38%,
+        rgba(255, 255, 255, 0) 70%),
       radial-gradient(130% 150% at 50% -20%,
-        rgba(255, 255, 255, 0.07) 0, rgba(255, 255, 255, 0.015) 42%,
+        rgba(255, 255, 255, 0.055) 0, rgba(255, 255, 255, 0.012) 42%,
         rgba(255, 255, 255, 0) 72%),
-      linear-gradient(180deg, rgba(22, 22, 21, 0.26), rgba(9, 9, 9, 0.34));
+      linear-gradient(180deg, rgba(22, 22, 21, 0.24), rgba(9, 9, 9, 0.32));
     backdrop-filter: var(--glass-body); -webkit-backdrop-filter: var(--glass-body);
     box-shadow:
-      inset 0 1px 1px rgba(255, 255, 255, 0.07),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.30),
+      /* light creeping in from every edge: the pane has thickness */
+      inset 0 0 18px -4px rgba(255, 255, 255, 0.10),
+      /* and the near face casts a line under the top edge */
+      inset 0 7px 9px -9px rgba(0, 0, 0, 0.75),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.28),
       0 2px 4px rgba(0, 0, 0, 0.4), 0 22px 54px rgba(0, 0, 0, 0.46);
   }
 
@@ -732,13 +738,13 @@
     border-radius: inherit; pointer-events: none;
     /* 10px keeps the inner corner at a 10px radius instead of 4px, so the
        bevel follows the outer curve; the blur feathers its inner edge */
-    padding: 10px;
+    padding: 9px;
     backdrop-filter: var(--glass-lens); -webkit-backdrop-filter: var(--glass-lens);
     filter: blur(3px);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    opacity: 0.5;
+    opacity: 0.6;
   }
 
   /* 3. the specular rim: a 1px border drawn from a gradient, so it catches
@@ -747,12 +753,14 @@
     content: ""; position: absolute; inset: 0; z-index: 1;
     border-radius: inherit; pointer-events: none;
     padding: 1px;
-    background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.72) 0,
-      rgba(255, 255, 255, 0.14) 22%,
-      rgba(255, 255, 255, 0.05) 48%,
-      rgba(255, 255, 255, 0.18) 74%,
-      rgba(255, 255, 255, 0.58) 100%);
+    background: conic-gradient(from 200deg at 50% 50%,
+      rgba(238, 244, 255, 0.10) 0deg,
+      rgba(255, 252, 246, 0.80) 42deg,    /* top edge, facing the light */
+      rgba(255, 255, 255, 0.16) 104deg,
+      rgba(255, 255, 255, 0.05) 168deg,
+      rgba(214, 236, 255, 0.52) 228deg,   /* bottom edge, cooler bounce */
+      rgba(255, 255, 255, 0.11) 292deg,
+      rgba(238, 244, 255, 0.10) 360deg);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
@@ -823,7 +831,7 @@
   .proj-body figure { margin: 0; }
   .proj-body img {
     width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
-    display: block; background: #0a0a0b; border-radius: 7px;
+    display: block; background: #0a0a0b;
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .proj-text { display: grid; gap: 9px; align-content: start; }
