@@ -73,7 +73,7 @@ window.SITE = {
       tag: "Planned",
       title: "Reading a 9-DoF IMU over I2C",
       blurb: "Stage 1, the sensor driver",
-      stack: "C++ · F´ · FPP · I2C · GoogleTest",
+      stack: "C++, F´, FPP, I2C, GoogleTest",
       body: `
 First of six stages. Haven't started it yet.
 
@@ -88,7 +88,7 @@ Most of the actual work here is error handling. The sensor can drop off the bus,
       tag: "Planned",
       title: "Working out which way the board is pointing",
       blurb: "Stage 2, sensor fusion",
-      stack: "C++ · F´ · quaternion math",
+      stack: "C++, F´, quaternion math",
       body: `
 Stage two. Not built yet.
 
@@ -103,7 +103,7 @@ What comes out is a quaternion you can actually trust. The filter gain is tunabl
       tag: "Planned",
       title: "Pointing the board with a reaction wheel",
       blurb: "Stage 3, the controller",
-      stack: "C++ · F´ · PWM · control theory",
+      stack: "C++, F´, PWM, control theory",
       body: `
 Stage three. Not built yet.
 
@@ -120,7 +120,7 @@ One wheel only controls one axis. Three would be the real thing, but I don't nee
       tag: "Planned",
       title: "Catching a dead sensor mid-maneuver",
       blurb: "Stage 4, safe mode",
-      stack: "C++ · F´ · state machines",
+      stack: "C++, F´, state machines",
       body: `
 Stage four. Not built yet.
 
@@ -137,7 +137,7 @@ Once it's in safe mode it stays there until I command it out. Letting it recover
       tag: "Planned",
       title: "Flying the software against a simulated satellite",
       blurb: "Stage 5, hardware in the loop",
-      stack: "C++ · F´ · Python · rigid-body dynamics",
+      stack: "C++, F´, Python, rigid-body dynamics",
       body: `
 Stage five, the last one. Not built yet.
 
