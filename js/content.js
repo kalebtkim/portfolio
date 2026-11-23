@@ -72,8 +72,6 @@ window.SITE = {
       date: "2026-11-21",
       title: "Professional Networking",
       body: `
-These last few months have been insanely fun, but it's also made me out of touch in some ways from the other freshmen students here at A&M. I feel really isolated since I feel like not a lot of people are doing what I do for professional development and networking, or at least that's in my mind. That sounds pretty arrogant, which it most likely is, but I've gotten further in these last 6 months than I had in the last few years since starting high school.
-
 I started going into random Discord servers and Reddit forums not really knowing who to talk to about the typical development questions I had, and I honestly felt pretty lost on what I exactly wanted to do almost a year before now.
 
 What I do for professional networking that sets me apart, I feel like, is more on the lengths I'll go to actually have a conversation with someone in person. I started finalizing my niche or area of interest or whatever when summer break started, and I started joining a lot of developer forums and Discord servers that were more concentric to my needs for software development, like servers for C++ or adjacent fields that use C/C++. I started meeting up with these people from these servers in person, which was admittedly pretty scary and numbing at first.
