@@ -306,11 +306,14 @@
     if (!el) { return; }
     var links = (S.links || []).map(function (l) {
       return '<a class="btn" href="' + esc(l[2]) + '" target="_blank" rel="noopener">' +
-        esc(l[0]) + ": " + esc(l[1]) + " &#8599;</a>";
+        '<span class="k">' + esc(l[0]) + '</span>' +
+        '<span class="v">: ' + esc(l[1]) + " &#8599;</span></a>";
     }).join("");
     el.innerHTML = '<div class="in"><span class="lab">Contact</span><div class="items">' +
-      '<button class="btn" data-copy-email type="button">Email: ' + emailMarkup() + "</button>" +
-      links + '<a class="btn" href="#top">Back to top</a></div></div>';
+      '<button class="btn" data-copy-email type="button">' +
+      '<span class="k">Email</span><span class="v">: ' + emailMarkup() + "</span></button>" +
+      links + '<a class="btn" href="#top"><span class="v">Back to </span>' +
+      '<span class="k">top</span></a></div></div>';
   }
 
   /* --- copy buttons ----------------------------------------------------- */

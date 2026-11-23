@@ -179,6 +179,7 @@
   /* the trailing element sat 16px from the card edge but only 9px from
      the top and bottom of its row; this evens the inset up */
   .card dl > div > *:last-child { justify-self: end; margin-right: -6px; }
+  .card dl > div > span:empty { display: none; }
   .card dt { font-size: 11.5px; color: rgba(255, 255, 255, 0.58); }
   .card dd { margin: 0; font-size: 13px; color: #fff; }
   .card dd.addr { white-space: nowrap; }
@@ -217,12 +218,27 @@
   }
 
   @media (max-width: 620px) {
-    .card dl > div { grid-template-columns: 84px minmax(0, 1fr); row-gap: 5px; }
-    .btn { grid-column: 2; justify-self: start; }
+    /* Label over value on the left, with the mark or button centred
+       against both on the right. The side-by-side desktop row leaves the
+       value only ~160px here, so everything wrapped anyway; stacking it
+       deliberately is shorter than stacking it by accident. */
+    .card dl > div {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "label trail" "value trail";
+      row-gap: 2px; min-height: 0; align-items: center;
+    }
+    .card dl dt { grid-area: label; }
+    .card dl dd { grid-area: value; }
+    .card dl > div > *:last-child { grid-area: trail; align-self: center; }
   }
 
   @media (max-width: 620px) {
-    .hero { height: clamp(420px, 80vh, 680px); }
+    /* min-height, never height: a phone wraps the summary to six lines
+       and a fixed height would slice the buttons off the bottom */
+    .hero { min-height: clamp(420px, 70vh, 620px); }
+    /* the sun lands directly behind the text once the art is cropped this
+       narrow, so the art itself is dimmed rather than only veiled */
+    .art { filter: blur(4px) brightness(0.92) contrast(1.08) saturate(1.3); }
     .summary { max-width: none; }
     /* the wide offset would drop the text onto the sun on a phone */
     .intro { padding-top: clamp(92px, 15vh, 150px); }
@@ -230,11 +246,12 @@
        band is darkened harder to keep the text readable */
     .hero::after {
       background: linear-gradient(to bottom,
-        rgba(14, 14, 15, 0.94) 0%,
-        rgba(14, 14, 15, 0.86) 28%,
-        rgba(14, 14, 15, 0.45) 42%,
-        rgba(14, 14, 15, 0) 58%,
-        rgba(32, 23, 17, 0.45) 76%,
+        rgba(14, 14, 15, 0.80) 0%,
+        rgba(14, 14, 15, 0.72) 34%,
+        rgba(14, 14, 15, 0.60) 56%,
+        rgba(14, 14, 15, 0.34) 70%,
+        rgba(14, 14, 15, 0.08) 80%,
+        rgba(32, 23, 17, 0.45) 88%,
         rgba(32, 23, 17, 0.9) 91%,
         var(--seam) 98%,
         var(--seam) 100%);
@@ -252,7 +269,7 @@
     content: ""; position: absolute; top: -4%; left: -4%; right: -4%;
     aspect-ratio: 1400 / 2100;
     background: url("../img/ridge.svg") center top / 100% auto no-repeat;
-    filter: blur(10px) brightness(1.04) saturate(1.1);
+    filter: blur(15px) brightness(1.04) saturate(1.1);
     /* the picture fades out at its own bottom edge, not at the page's, so a
        long projects page lands on black and a short one never shows a band */
     -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 460px), transparent 100%);
@@ -899,6 +916,59 @@
   .log-empty { padding: 18px 16px; font-size: 12.5px; color: rgba(255, 255, 255, 0.58); }
   .empty-note { padding: 14px 13px; font-size: 12px; color: rgba(255, 255, 255, 0.54); }
   code { font-family: var(--mono); color: rgba(255, 255, 255, 0.78); }
+
+  /* ---- narrow screens ---------------------------------------------------
+     The ridge is drawn at the picture's own 1400x2100 ratio, which on a
+     phone is only ~590px tall while the content below the hero runs to
+     1500px. Everything past that was falling to flat black, taking the
+     stars with it. Below this width the picture covers instead. */
+  @media (max-width: 760px) {
+    .lower-bg::before {
+      aspect-ratio: auto; inset: -3%;
+      background-size: cover; background-position: center top;
+      -webkit-mask-image: none; mask-image: none;
+    }
+    .stars { aspect-ratio: auto; height: 100%; }
+  }
+
+  /* On a phone the addresses are what made the bar wrap into ragged
+     rows, and nobody reads a URL off a chip anyway: the labels alone fit
+     on one line, and the links still go where they went. */
+  @media (max-width: 620px) {
+    .contactbar { padding-left: 14px; padding-right: 14px; }
+    .contactbar .in { gap: 10px; padding: 10px 12px; justify-content: center; }
+    .contactbar .lab { display: none; }
+    .contactbar .items { width: 100%; justify-content: space-between; gap: 6px; }
+    .contactbar .items .v { display: none; }
+    /* "Back to top" collapses to "top", so give it a capital back */
+    .contactbar .items .k { text-transform: capitalize; }
+    .contactbar .items > * { padding: 8px 12px; }
+  }
+
+  /* the brand and the nav together overran the width */
+  /* the cards were carrying desktop sizing onto a 393px screen */
+  @media (max-width: 620px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .card dl > div { padding: 8px 13px; }
+    .card dt { font-size: 10.5px; }
+    .card dd { font-size: 12px; }
+    .card > h2, .card-h { height: 38px; padding: 0 13px; font-size: 10px; }
+    .card dl .mark { width: 26px; height: 26px; }
+    .btn { font-size: 10.5px; padding: 4px 9px; }
+    .post { padding: 10px 14px 15px; gap: 9px; }
+    .post h3 { font-size: 19px; }
+    .post p { font-size: 12px; line-height: 1.85; }
+    .sec-h h2 { letter-spacing: 0.04em; }
+    .proj-text h3 { font-size: 18px; }
+    .proj-text p { font-size: 12px; }
+  }
+
+  @media (max-width: 520px) {
+    .bar { height: 48px; padding: 0 16px; gap: 10px; }
+    .brand { font-size: 13px; }
+    .nav { gap: 14px; }
+    .nav a { font-size: 12px; }
+  }
 
   @media (max-width: 620px) {
     .log-h { display: none; }

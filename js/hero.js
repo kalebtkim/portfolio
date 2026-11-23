@@ -35,9 +35,13 @@
       ctx.textBaseline = "middle";
       ctx.textAlign = "left";
       ctx.font = Math.round(cell * 1.9) + "px " + getComputedStyle(cv).fontFamily;
-      // hold the sun (col 150) in frame when the width overflows
+      // Hold the sun (col 150) in frame when the width overflows. On a
+      // phone the crop is tight enough that the sun lands right behind the
+      // summary, so there it is anchored off to the right and the darker
+      // cloud field sits under the text instead.
       var artW = W * cell, artH = H * cell;
-      cv.dataset.ox = Math.min(0, Math.max(cssW - artW, cssW * 0.72 - 150 * cell));
+      var anchor = cssW < 700 ? 1.32 : 0.72;
+      cv.dataset.ox = Math.min(0, Math.max(cssW - artW, cssW * anchor - 150 * cell));
       // sit the horizon (row 40) a little past the middle of the band, which
       // keeps the bright sky clear of the text block above it
       cv.dataset.oy = Math.min(0, Math.max(cssH - artH, cssH * 0.56 - 40 * cell));
