@@ -166,15 +166,15 @@
     opacity: 0.88;
     /* --glow is set per image by render.js, read off the file itself */
     filter:
-      drop-shadow(0 0 6px var(--glow, transparent))
-      drop-shadow(0 0 18px var(--glow, transparent));
+      drop-shadow(0 0 3px var(--glow, transparent))
+      drop-shadow(0 0 10px var(--glow, transparent));
     transition: opacity 140ms ease, filter 180ms ease;
   }
   .card dl > div:hover .mark {
     opacity: 1;
     filter:
-      drop-shadow(0 0 8px var(--glow, transparent))
-      drop-shadow(0 0 26px var(--glow, transparent));
+      drop-shadow(0 0 4px var(--glow, transparent))
+      drop-shadow(0 0 15px var(--glow, transparent));
   }
   /* the trailing element sat 16px from the card edge but only 9px from
      the top and bottom of its row; this evens the inset up */

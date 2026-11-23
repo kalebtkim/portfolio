@@ -108,7 +108,7 @@
       else               { h = ((r - g) / d + 4) / 6; }
     }
 
-    var sat = 0.78, light = 0.56;
+    var sat = 0.70, light = 0.50;
     var q = light + sat - light * sat;
     var pp = 2 * light - q;
 
@@ -121,9 +121,11 @@
       return pp;
     };
 
-    return "rgb(" + Math.round(channel(h + 1 / 3) * 255) + "," +
+    /* carried as rgba: the glow should read as a hint of the colour, not
+       a lamp behind a 32px badge */
+    return "rgba(" + Math.round(channel(h + 1 / 3) * 255) + "," +
            Math.round(channel(h) * 255) + "," +
-           Math.round(channel(h - 1 / 3) * 255) + ")";
+           Math.round(channel(h - 1 / 3) * 255) + ",0.34)";
   }
 
   function glows() {
