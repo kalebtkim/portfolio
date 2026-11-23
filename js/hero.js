@@ -70,7 +70,6 @@
       }
     }
 
-    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     function tick(now) {
       raf = requestAnimationFrame(tick);
       if (!started) { started = now; }
@@ -82,23 +81,19 @@
     }
 
     layout();
-    if (still) {
-      draw(2.6);
-    } else {
-      raf = requestAnimationFrame(tick);
-      document.addEventListener("visibilitychange", function () {
-        if (document.hidden) {
-          if (raf) { cancelAnimationFrame(raf); raf = null; }
-        } else if (!raf) {
-          started = 0; raf = requestAnimationFrame(tick);
-        }
-      });
-    }
+    raf = requestAnimationFrame(tick);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+      } else if (!raf) {
+        started = 0; raf = requestAnimationFrame(tick);
+      }
+    });
 
     var tid;
     window.addEventListener("resize", function () {
       clearTimeout(tid);
-      tid = setTimeout(function () { layout(); if (still) { draw(2.6); } }, 150);
+      tid = setTimeout(layout, 150);
     });
   };
 })();

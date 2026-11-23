@@ -39,7 +39,6 @@
   }
   h1, p { margin: 0; }
   html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   /* jumping to #projects or a card must not tuck it under the fixed bar */
   #projects, .proj-list .card, #top { scroll-margin-top: 66px; }
 
@@ -725,9 +724,6 @@
     38%      { opacity: 0.45; }
     55%      { opacity: 1; }
     72%      { opacity: 0.5; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .stars i { animation: none; opacity: 0.85; }
   }
 
   .lower > .wrap { position: relative; z-index: 1; flex: 1 0 auto; }
