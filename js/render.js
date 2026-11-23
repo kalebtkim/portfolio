@@ -70,6 +70,76 @@
     return esc(e[0]) + at() + esc(e[1]) + dot() + esc(e[2]);
   }
 
+  /* Reads a logo's own dominant colour off a canvas, so the glow behind
+     each mark matches the file without anyone writing the colour down.
+     Pixels are weighted by saturation, so a maroon square with white
+     lettering reports maroon rather than pink. */
+  function dominant(img) {
+    var size = 24;
+    var c = document.createElement("canvas");
+    c.width = c.height = size;
+    c.getContext("2d").drawImage(img, 0, 0, size, size);
+
+    var px = c.getContext("2d").getImageData(0, 0, size, size).data;
+    var r = 0, g = 0, b = 0, total = 0;
+
+    for (var i = 0; i < px.length; i += 4) {
+      if (px[i + 3] < 24) { continue; }
+      var hi = Math.max(px[i], px[i + 1], px[i + 2]);
+      var lo = Math.min(px[i], px[i + 1], px[i + 2]);
+      var weight = (hi - lo) / 255 + 0.06;      /* saturation, plus a floor */
+      r += px[i] * weight; g += px[i + 1] * weight; b += px[i + 2] * weight;
+      total += weight;
+    }
+    if (!total) { return null; }
+    return lift(r / total, g / total, b / total);
+  }
+
+  /* A logo's own colour is usually too dark to glow against a dark page.
+     This keeps the hue and pushes it to a fixed brightness and saturation,
+     so maroon stays maroon but actually emits light. */
+  function lift(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var hi = Math.max(r, g, b), lo = Math.min(r, g, b), h = 0, d = hi - lo;
+
+    if (d) {
+      if (hi === r)      { h = ((g - b) / d + (g < b ? 6 : 0)) / 6; }
+      else if (hi === g) { h = ((b - r) / d + 2) / 6; }
+      else               { h = ((r - g) / d + 4) / 6; }
+    }
+
+    var sat = 0.78, light = 0.56;
+    var q = light + sat - light * sat;
+    var pp = 2 * light - q;
+
+    var channel = function (t) {
+      if (t < 0) { t += 1; }
+      if (t > 1) { t -= 1; }
+      if (t < 1 / 6) { return pp + (q - pp) * 6 * t; }
+      if (t < 1 / 2) { return q; }
+      if (t < 2 / 3) { return pp + (q - pp) * (2 / 3 - t) * 6; }
+      return pp;
+    };
+
+    return "rgb(" + Math.round(channel(h + 1 / 3) * 255) + "," +
+           Math.round(channel(h) * 255) + "," +
+           Math.round(channel(h - 1 / 3) * 255) + ")";
+  }
+
+  function glows() {
+    var marks = document.querySelectorAll("img.mark");
+    Array.prototype.forEach.call(marks, function (img) {
+      var paint = function () {
+        try {
+          var c = dominant(img);
+          if (c) { img.style.setProperty("--glow", c); }
+        } catch (e) { /* a tainted canvas just means no glow */ }
+      };
+      if (img.complete && img.naturalWidth) { paint(); }
+      else { img.addEventListener("load", paint); }
+    });
+  }
+
   /* --- profile + latest post ------------------------------------------- */
   function decks() {
     var el = mount("decks");
@@ -107,6 +177,8 @@
     el.innerHTML =
       '<section class="card"><h2>Profile</h2><dl>' + rows + linkRows + emailRow + "</dl></section>" +
       '<section class="card">' + postCard + "</section>";
+
+    glows();
   }
 
   /* --- projects: index bar and cards ------------------------------------ */
