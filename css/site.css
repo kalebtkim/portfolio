@@ -246,8 +246,12 @@
       grid-template-areas: "label trail" "value trail";
       row-gap: 2px; min-height: 0; align-items: center;
     }
-    .card dl dt { grid-area: label; }
-    .card dl dd { grid-area: value; }
+    /* Direct children of a profile row, not any dt/dd inside the card. A
+       descendant selector here also caught the Stack list in a project
+       card, which has no areas of its own, so label and value resolved
+       to nothing and landed in the same cell on top of each other. */
+    .card dl > div > dt { grid-area: label; }
+    .card dl > div > dd { grid-area: value; }
     .card dl > div > *:last-child { grid-area: trail; align-self: center; }
   }
 
@@ -1109,3 +1113,45 @@
 
   /* The bar: text brightening only, no panel behind it. */
   .brand, .nav a { transition: color 160ms ease; }
+
+  /* ====== phone held sideways ==========================================
+     Landscape on a phone is about 850 wide but only 390 tall, so none of
+     the width queries above fire and the page keeps desktop sizing on a
+     screen shorter than the hero itself: a 400px min-height inside a
+     393px viewport, with a 68px name, and the buttons pushed off the
+     bottom.
+
+     The cause is that the hero scales on width. .name is 8vw, which is
+     generous at 852px wide and absurd when only 390px tall. Everything
+     here is re-scaled against the height instead, since height is the
+     dimension that is actually short. Capped at 560px tall so it catches
+     phones sideways and leaves tablets and desktops alone. */
+  @media (orientation: landscape) and (max-height: 560px) {
+    :root { --stack-gap: 26px; }
+
+    .bar { height: 44px; }
+    .brand { font-size: 13px; }
+    .nav { gap: 16px; }
+    .nav a { font-size: 12px; }
+    #projects, .proj-list .card, #top { scroll-margin-top: 56px; }
+
+    /* content-sized, so the buttons can no longer fall off the bottom */
+    .hero { min-height: 0; }
+    .intro { padding-top: clamp(54px, 16vh, 78px); }
+    .name { font-size: clamp(28px, 10vh, 52px); }
+    .role { font-size: 10px; }
+    .summary p { font-size: 12px; line-height: 1.7; }
+    .acts a { font-size: 10.5px; padding: 9px 16px; }
+
+    .card-h, .card > h2 { height: 36px; font-size: 10px; }
+    .card dl > div { padding: 7px 13px; min-height: 0; }
+    .card dt { font-size: 10px; }
+    .card dd { font-size: 12px; }
+    .card dl .mark { width: 24px; height: 24px; }
+
+    .sec-h h2 { font-size: clamp(24px, 9vh, 40px); }
+    .proj-text h3 { font-size: 17px; }
+    .proj-text p { font-size: 12px; line-height: 1.8; }
+    .post h3 { font-size: 18px; }
+    .post p { font-size: 12px; line-height: 1.8; }
+  }
