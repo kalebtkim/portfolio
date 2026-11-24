@@ -121,11 +121,11 @@ def carve(seed, count=6, N=3):
 
 
 if __name__ == "__main__":
-    # What the site ships: a 2x2x2 cube with the block nearest the eye
-    # taken out, so the void faces the viewer and the silhouette stays a
-    # clean hexagon. 2x2 rather than 3x3 because four cells a face still
+    # What the site ships: a 2x2x2 cube with two blocks taken out, the
+    # one nearest the eye so the void faces the viewer, and one low on
+    # the left. 2x2 rather than 3x3 because four cells a face still
     # resolve in a 16px browser tab and nine do not.
-    CUT = {(1, 1, 1)}
+    CUT = {(1, 1, 1), (0, 1, 0)}
     out = sys.argv[1] if len(sys.argv) > 1 else "../img/favicon.svg"
     open(out, "w").write(build(CUT, outer="1.8", inner="0.45", seam="0.3",
                                pad=2, N=2))
