@@ -350,7 +350,7 @@
     }
 
     function renderList() {
-      var head = '<div class="log-h"><span>No.</span><span>Date</span><span>Entry</span></div>';
+      var head = '<div class="log-h"><span>#</span><span>Date</span><span>Entry</span></div>';
       if (!list.length) {
         el.innerHTML = '<div class="log">' + head +
           '<div class="log-empty">No entries yet. Add one to the <code>posts</code> list ' +
@@ -360,7 +360,7 @@
       el.innerHTML = '<div class="log">' + head + list.map(function (p, i) {
         var n = list.length - i;
         return '<a class="log-row" href="#' + esc(p.id) + '">' +
-          '<span class="no">' + (n < 10 ? "0" : "") + n + "</span>" +
+          '<span class="no">' + n + "</span>" +
           '<span class="date">' + esc(usDate(p.date)) + "</span>" +
           '<span class="entry"><span class="t">' + esc(p.title) + "</span>" +
           "<span class=\"x\">" + esc(p.excerpt || "") + "</span></span></a>";

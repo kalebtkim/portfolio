@@ -145,7 +145,7 @@ Substitution occurs at the driver boundary, so the flight build contains no code
 
     {
       date: "2026-11-21",
-      title: "Professional Networking",
+      title: "Coffee Chatting",
       body: `
 I started going into random Discord servers and Reddit forums not really knowing who to talk to about the typical development questions I had, and I honestly felt pretty lost on what I exactly wanted to do almost a year before now.
 

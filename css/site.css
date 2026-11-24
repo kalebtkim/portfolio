@@ -4,7 +4,7 @@
     --bright: #ffffff;
     --accent: #f38020;
     --seam: #201711;   /* warm tone where the art hands off to the ridge */
-    --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+    --mono: "Alegreya Sans SC", "Helvetica Neue", Arial, sans-serif;
     /* every block on the page shares this measure and these gutters, so the
        contact bar lines up with the cards above it at any width */
     /* panels are lifted off the page with shadow instead of outlined */
@@ -24,7 +24,7 @@
     --stack-gap: clamp(46px, 6vh, 76px);
     --measure: 1320px;
     --gutter: clamp(18px, 5vw, 48px);
-    --display: "Geist", "Helvetica Neue", Arial, sans-serif;
+    --display: "Alegreya Sans SC", "Helvetica Neue", Arial, sans-serif;
     /* optical nudge pulling the name back into line with the text under it;
        retune this one value if the glyph edge looks off */
     --name-nudge: -0.06em;
@@ -34,7 +34,7 @@
   body {
     margin: 0; background: var(--bg); color: var(--fg);
     min-height: 100vh; display: flex; flex-direction: column;
-    font-family: var(--mono); font-weight: 200; font-size: 14px; line-height: 1.8;
+    font-family: var(--mono); font-weight: 100; font-size: 14px; line-height: 1.8;
     -webkit-font-smoothing: antialiased;
   }
   h1, p { margin: 0; }
@@ -946,7 +946,6 @@
   .log-row .date { font-size: 12px; color: rgba(255, 255, 255, 0.56); font-variant-numeric: tabular-nums; }
   a.log-row { text-decoration: none; }
   a.log-row:hover { background: rgba(255, 255, 255, 0.05); }
-  a.log-row:hover .t { text-decoration: underline; text-decoration-color: rgba(255,255,255,.4); }
   .log-row .entry { display: block; }
   .log-row .entry .t {
     display: block; margin-bottom: 4px; font-family: var(--display);
