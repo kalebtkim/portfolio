@@ -4,7 +4,7 @@
     --bright: #ffffff;
     --accent: #f38020;
     --seam: #201711;   /* warm tone where the art hands off to the ridge */
-    --mono: "Alegreya Sans SC", "Helvetica Neue", Arial, sans-serif;
+    --mono: "Inter", "Helvetica Neue", Arial, sans-serif;
     /* every block on the page shares this measure and these gutters, so the
        contact bar lines up with the cards above it at any width */
     /* panels are lifted off the page with shadow instead of outlined */
@@ -24,7 +24,7 @@
     --stack-gap: clamp(46px, 6vh, 76px);
     --measure: 1320px;
     --gutter: clamp(18px, 5vw, 48px);
-    --display: "Alegreya Sans SC", "Helvetica Neue", Arial, sans-serif;
+    --display: "Inter", "Helvetica Neue", Arial, sans-serif;
     /* optical nudge pulling the name back into line with the text under it;
        retune this one value if the glyph edge looks off */
     --name-nudge: -0.06em;
