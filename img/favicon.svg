@@ -1,15 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Wireframe cube: a front square, the same square offset up and to
-       the right, and four edges joining the corners. Drawn large in the
-       box on purpose, since a favicon is read at 16px. -->
   <rect width="64" height="64" fill="#000000"/>
-  <g fill="none" stroke="#ffffff" stroke-width="4"
-     stroke-linecap="square" stroke-linejoin="miter">
-    <rect x="8" y="22" width="34" height="34"/>
-    <rect x="22" y="8" width="34" height="34"/>
-    <path d="M8 22 L22 8"/>
-    <path d="M42 22 L56 8"/>
-    <path d="M42 56 L56 42"/>
-    <path d="M8 56 L22 42"/>
+  <g fill="#000000" stroke="#ffffff" stroke-width="2.0"
+     stroke-linejoin="round" stroke-linecap="round">
+    <polygon points="3.66,51.09 13.11,56.55 13.11,45.64 3.66,40.18"/>
+    <polygon points="60.34,51.09 50.89,56.55 50.89,45.64 60.34,40.18"/>
+    <polygon points="32.00,2.00 41.45,7.45 32.00,12.91 22.55,7.45"/>
+    <polygon points="50.89,56.55 41.45,62.00 41.45,51.09 50.89,45.64"/>
+    <polygon points="32.00,56.55 41.45,62.00 41.45,51.09 32.00,45.64"/>
+    <polygon points="3.66,40.18 13.11,45.64 13.11,34.73 3.66,29.27"/>
+    <polygon points="60.34,40.18 50.89,45.64 50.89,34.73 60.34,29.27"/>
+    <polygon points="22.55,7.45 32.00,12.91 22.55,18.36 13.11,12.91"/>
+    <polygon points="32.00,56.55 22.55,62.00 22.55,51.09 32.00,45.64"/>
+    <polygon points="13.11,56.55 22.55,62.00 22.55,51.09 13.11,45.64"/>
+    <polygon points="41.45,7.45 50.89,12.91 41.45,18.36 32.00,12.91"/>
+    <polygon points="50.89,12.91 60.34,18.36 50.89,23.82 41.45,18.36"/>
+    <polygon points="60.34,29.27 50.89,34.73 50.89,23.82 60.34,18.36"/>
+    <polygon points="32.00,45.64 22.55,51.09 22.55,40.18 32.00,34.73"/>
+    <polygon points="13.11,45.64 22.55,51.09 22.55,40.18 13.11,34.73"/>
+    <polygon points="32.00,12.91 41.45,18.36 32.00,23.82 22.55,18.36"/>
+    <polygon points="50.89,45.64 41.45,51.09 41.45,40.18 50.89,34.73"/>
+    <polygon points="32.00,45.64 41.45,51.09 41.45,40.18 32.00,34.73"/>
+    <polygon points="13.11,12.91 22.55,18.36 13.11,23.82 3.66,18.36"/>
+    <polygon points="3.66,29.27 13.11,34.73 13.11,23.82 3.66,18.36"/>
+    <polygon points="22.55,18.36 32.00,23.82 22.55,29.27 13.11,23.82"/>
+    <polygon points="32.00,34.73 22.55,40.18 22.55,29.27 32.00,23.82"/>
+    <polygon points="13.11,34.73 22.55,40.18 22.55,29.27 13.11,23.82"/>
+    <polygon points="41.45,18.36 50.89,23.82 41.45,29.27 32.00,23.82"/>
+    <polygon points="50.89,34.73 41.45,40.18 41.45,29.27 50.89,23.82"/>
+    <polygon points="32.00,34.73 41.45,40.18 41.45,29.27 32.00,23.82"/>
   </g>
 </svg>
