@@ -349,18 +349,22 @@
       return list.filter(function (p) { return p.id === id; })[0];
     }
 
+    /* the same heading and count the Projects section carries */
+    function secHead() {
+      return '<div class="sec-h"><h1>Blog</h1><span class="count">' + list.length +
+             (list.length === 1 ? " entry" : " entries") + "</span></div>";
+    }
+
     function renderList() {
-      var head = '<div class="log-h"><span>#</span><span>Date</span><span>Entry</span></div>';
+      var head = '<div class="log-h"><span>Date</span><span>Entry</span></div>';
       if (!list.length) {
-        el.innerHTML = '<div class="log">' + head +
+        el.innerHTML = secHead() + '<div class="log">' + head +
           '<div class="log-empty">No entries yet. Add one to the <code>posts</code> list ' +
           "in js/content.js.</div></div>";
         return;
       }
-      el.innerHTML = '<div class="log">' + head + list.map(function (p, i) {
-        var n = list.length - i;
+      el.innerHTML = secHead() + '<div class="log">' + head + list.map(function (p) {
         return '<a class="log-row" href="#' + esc(p.id) + '">' +
-          '<span class="no">' + n + "</span>" +
           '<span class="date">' + esc(usDate(p.date)) + "</span>" +
           '<span class="entry"><span class="t">' + esc(p.title) + "</span>" +
           "<span class=\"x\">" + esc(p.excerpt || "") + "</span></span></a>";

@@ -224,19 +224,27 @@
                 inset 0 -1px 0 rgba(0, 0, 0, 0.34),
                 0 1px 2px rgba(0, 0, 0, 0.55), 0 6px 16px rgba(0, 0, 0, 0.46);
   }
-  /* The @ and the . are background images, so no part of the address sits in
-     the markup as text. Use: name<i class="at"></i>host<i class="dot"></i>tld */
-  .at, .dot {
-    display: inline-block; background-repeat: no-repeat;
-    background-size: contain; background-position: center;
-  }
+  /* The @ and the . never appear as characters in the markup, so the
+     address cannot be lifted by reading the DOM as text. Use:
+     name<i class="at"></i>host<i class="dot"></i>tld
+
+     The @ is a mask rather than a background image, and the dot is drawn
+     outright. Both are painted in currentColor, so they take whatever
+     colour the surrounding address is in instead of being locked to the
+     one baked into a PNG. */
+  .at, .dot { display: inline-block; background-color: currentColor; }
   .at {
     width: .72em; height: 1.1em; vertical-align: -.24em; margin: 0 .02em;
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAA2CAYAAABA3FA2AAAEqElEQVR42sWZW4hWVRTHf994mdHJGdFKRkfFsQwLGTLNRhMth0LwIcGHIMhyojeZtygQynyohHwpLUOjeoioHqRCuxCFWj6M4UQXsVLzNiNjTM2kzdX597Imjpt1Lt/5vrE/HD6+dfZe57/XvqzLLkiiBFQAi4E1QCOwAJgF3ABUAd3AJaATOAh8DhwFriZqlZTnaZD0oqROFY8zklokjY/TXyyZGZJekzSk0nFC0qJSSa2X9IfKi15J6/KQKkh6KUHxgKQDklolrZI0U1K1pImS6iU1SXpW0o8x/a9Kai6GVIWkd2KUXZa01aY0y+AqJD0qqcvRdUnS7KykXo0htF/SrJybZL6kXxydn2Uh1RpDaJtNKSU8cyV1O7qXJZG609ZKiKdLJBN9Njj698WRGi/pB6fD7jISGn3anU0z2Wu42SF0TNKEMSC1yflWcyFwM9XAGWB6RDYMLAG+p/yYDZwNZNsqAkFLQAjgzTEiBHAOOB/I5kRJFYDWoMEgsLXIDy0DXgbagAvAANBh/3cATfatUXQG/W+Mzu8KZ37fLWJ93C7pYEb38q2kRut3IHh3JGqph51Rv5HROhuBdmBlxvZNFsKsN0tGMSk60pMB4y5zDWkWapE0ktMh90s6FcjaRy01B2gIGO8HRjKMeHewRgAuA9uBpcA0C/ruAJ6xdTaKSmBeXJD3iDOKTSkWqpb0a8yZNi+h31RJHydY7z9LLXKscCTFSpuBWwLZaeBB+43DX8AG4FBaOPxJwHYwKVy1d2edUT5QZLTQn2SpcD39Zid5HNbaaRzF15YYZMVJYG9cNgJQ55y0SbjPkb2V40R/O45UFTA1kHelKLvXkX2Rg1Qb0OuRqnEad6coW+gMoiMHKdmh61oqRH+Cogl27kRxvgSnfMEjVek0HEhQMs2R9ZRAqscjNZKwATwUMsqyouB9vM9pWJWgxFtvNSWQqslKqjpByaD5tijqSyBV75HqcQ7KGSmKjgf/b7ZqS56pa4xbU2H0NzNF2WFH1pyD1NK46fO29K0pyr6KCfSKxcYkh7zXcYx1KQ75nJceFVnj6ktyyMccvksSRjgM7HTkrwM3ZbDQRHPGVUkO+ajz7v4Uxa9YNBHFfOBTYG5Cv1rgfWB1Wjw1TtKfgRl/zjAFyyUNxxTDXpB0l6RaSZMlLZT0VMy0XzN90Q986DRozEDsiRIShytWZnTXFMAHjiEfy7A+9gCPA0NF7rxhS+uOJ1WHK52aUa8F+lmT0UMZLfSdpMXWb1/S9CFph6Pg+SIrKfeYnjZJHVbeuWhZzk5Ja2wNx+oIqy51wKlgq/ZbUPc71wlhiNIJ7HIihj0p4Ux54ZhvSsy23TIGRbOibhzWOaRGLJP+30ghabtDbPB6EEt6Oc7q5Z7FnkvbQWNFCkmTJH2ZofB1XUlhfuujGGIjkt6TtLKcpAoZLyELVvvckpC5nLYs+TBwwqrMf1tMX2up2XTgNru4XGWVwl2lXkIuT7iNyoOfynEJiRX5n3TKkXmxOvxGnlN6yMy+AHjIoou+nGd3n03ltWulxIvtaO3ybmCF1TYbrH41xXLIAnAFuGi+tR34xhKQf0Jl/wIptLFQ08dD2QAAAABJRU5ErkJggg==");
+    -webkit-mask: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAA2CAYAAABA3FA2AAAEqElEQVR42sWZW4hWVRTHf994mdHJGdFKRkfFsQwLGTLNRhMth0LwIcGHIMhyojeZtygQynyohHwpLUOjeoioHqRCuxCFWj6M4UQXsVLzNiNjTM2kzdX597Imjpt1Lt/5vrE/HD6+dfZe57/XvqzLLkiiBFQAi4E1QCOwAJgF3ABUAd3AJaATOAh8DhwFriZqlZTnaZD0oqROFY8zklokjY/TXyyZGZJekzSk0nFC0qJSSa2X9IfKi15J6/KQKkh6KUHxgKQDklolrZI0U1K1pImS6iU1SXpW0o8x/a9Kai6GVIWkd2KUXZa01aY0y+AqJD0qqcvRdUnS7KykXo0htF/SrJybZL6kXxydn2Uh1RpDaJtNKSU8cyV1O7qXJZG609ZKiKdLJBN9Njj698WRGi/pB6fD7jISGn3anU0z2Wu42SF0TNKEMSC1yflWcyFwM9XAGWB6RDYMLAG+p/yYDZwNZNsqAkFLQAjgzTEiBHAOOB/I5kRJFYDWoMEgsLXIDy0DXgbagAvAANBh/3cATfatUXQG/W+Mzu8KZ37fLWJ93C7pYEb38q2kRut3IHh3JGqph51Rv5HROhuBdmBlxvZNFsKsN0tGMSk60pMB4y5zDWkWapE0ktMh90s6FcjaRy01B2gIGO8HRjKMeHewRgAuA9uBpcA0C/ruAJ6xdTaKSmBeXJD3iDOKTSkWqpb0a8yZNi+h31RJHydY7z9LLXKscCTFSpuBWwLZaeBB+43DX8AG4FBaOPxJwHYwKVy1d2edUT5QZLTQn2SpcD39Zid5HNbaaRzF15YYZMVJYG9cNgJQ55y0SbjPkb2V40R/O45UFTA1kHelKLvXkX2Rg1Qb0OuRqnEad6coW+gMoiMHKdmh61oqRH+Cogl27kRxvgSnfMEjVek0HEhQMs2R9ZRAqscjNZKwATwUMsqyouB9vM9pWJWgxFtvNSWQqslKqjpByaD5tijqSyBV75HqcQ7KGSmKjgf/b7ZqS56pa4xbU2H0NzNF2WFH1pyD1NK46fO29K0pyr6KCfSKxcYkh7zXcYx1KQ75nJceFVnj6ktyyMccvksSRjgM7HTkrwM3ZbDQRHPGVUkO+ajz7v4Uxa9YNBHFfOBTYG5Cv1rgfWB1Wjw1TtKfgRl/zjAFyyUNxxTDXpB0l6RaSZMlLZT0VMy0XzN90Q986DRozEDsiRIShytWZnTXFMAHjiEfy7A+9gCPA0NF7rxhS+uOJ1WHK52aUa8F+lmT0UMZLfSdpMXWb1/S9CFph6Pg+SIrKfeYnjZJHVbeuWhZzk5Ja2wNx+oIqy51wKlgq/ZbUPc71wlhiNIJ7HIihj0p4Ux54ZhvSsy23TIGRbOibhzWOaRGLJP+30ghabtDbPB6EEt6Oc7q5Z7FnkvbQWNFCkmTJH2ZofB1XUlhfuujGGIjkt6TtLKcpAoZLyELVvvckpC5nLYs+TBwwqrMf1tMX2up2XTgNru4XGWVwl2lXkIuT7iNyoOfynEJiRX5n3TKkXmxOvxGnlN6yMy+AHjIoou+nGd3n03ltWulxIvtaO3ybmCF1TYbrH41xXLIAnAFuGi+tR34xhKQf0Jl/wIptLFQ08dD2QAAAABJRU5ErkJggg==") center / contain no-repeat;
+    mask: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAA2CAYAAABA3FA2AAAEqElEQVR42sWZW4hWVRTHf994mdHJGdFKRkfFsQwLGTLNRhMth0LwIcGHIMhyojeZtygQynyohHwpLUOjeoioHqRCuxCFWj6M4UQXsVLzNiNjTM2kzdX597Imjpt1Lt/5vrE/HD6+dfZe57/XvqzLLkiiBFQAi4E1QCOwAJgF3ABUAd3AJaATOAh8DhwFriZqlZTnaZD0oqROFY8zklokjY/TXyyZGZJekzSk0nFC0qJSSa2X9IfKi15J6/KQKkh6KUHxgKQDklolrZI0U1K1pImS6iU1SXpW0o8x/a9Kai6GVIWkd2KUXZa01aY0y+AqJD0qqcvRdUnS7KykXo0htF/SrJybZL6kXxydn2Uh1RpDaJtNKSU8cyV1O7qXJZG609ZKiKdLJBN9Njj698WRGi/pB6fD7jISGn3anU0z2Wu42SF0TNKEMSC1yflWcyFwM9XAGWB6RDYMLAG+p/yYDZwNZNsqAkFLQAjgzTEiBHAOOB/I5kRJFYDWoMEgsLXIDy0DXgbagAvAANBh/3cATfatUXQG/W+Mzu8KZ37fLWJ93C7pYEb38q2kRut3IHh3JGqph51Rv5HROhuBdmBlxvZNFsKsN0tGMSk60pMB4y5zDWkWapE0ktMh90s6FcjaRy01B2gIGO8HRjKMeHewRgAuA9uBpcA0C/ruAJ6xdTaKSmBeXJD3iDOKTSkWqpb0a8yZNi+h31RJHydY7z9LLXKscCTFSpuBWwLZaeBB+43DX8AG4FBaOPxJwHYwKVy1d2edUT5QZLTQn2SpcD39Zid5HNbaaRzF15YYZMVJYG9cNgJQ55y0SbjPkb2V40R/O45UFTA1kHelKLvXkX2Rg1Qb0OuRqnEad6coW+gMoiMHKdmh61oqRH+Cogl27kRxvgSnfMEjVek0HEhQMs2R9ZRAqscjNZKwATwUMsqyouB9vM9pWJWgxFtvNSWQqslKqjpByaD5tijqSyBV75HqcQ7KGSmKjgf/b7ZqS56pa4xbU2H0NzNF2WFH1pyD1NK46fO29K0pyr6KCfSKxcYkh7zXcYx1KQ75nJceFVnj6ktyyMccvksSRjgM7HTkrwM3ZbDQRHPGVUkO+ajz7v4Uxa9YNBHFfOBTYG5Cv1rgfWB1Wjw1TtKfgRl/zjAFyyUNxxTDXpB0l6RaSZMlLZT0VMy0XzN90Q986DRozEDsiRIShytWZnTXFMAHjiEfy7A+9gCPA0NF7rxhS+uOJ1WHK52aUa8F+lmT0UMZLfSdpMXWb1/S9CFph6Pg+SIrKfeYnjZJHVbeuWhZzk5Ja2wNx+oIqy51wKlgq/ZbUPc71wlhiNIJ7HIihj0p4Ux54ZhvSsy23TIGRbOibhzWOaRGLJP+30ghabtDbPB6EEt6Oc7q5Z7FnkvbQWNFCkmTJH2ZofB1XUlhfuujGGIjkt6TtLKcpAoZLyELVvvckpC5nLYs+TBwwqrMf1tMX2up2XTgNru4XGWVwl2lXkIuT7iNyoOfynEJiRX5n3TKkXmxOvxGnlN6yMy+AHjIoou+nGd3n03ltWulxIvtaO3ybmCF1TYbrH41xXLIAnAFuGi+tR34xhKQf0Jl/wIptLFQ08dD2QAAAABJRU5ErkJggg==") center / contain no-repeat;
   }
+  /* Sized and spaced like a real full stop: an inline-block sits its
+     bottom edge on the baseline, which is where a period sits, and the
+     old .22em square with .22em of air each side read as a bullet with
+     gaps around it rather than as punctuation. */
   .dot {
-    width: .22em; height: .22em; vertical-align: 0; margin: 0 .22em;
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEAklEQVR42u2bO08VURDHf3vupcCQgBK0pDC+EDVoYQQbrU1oATV0JITwDfgAQEli7LDwgS2JNTRiYqFExRcmJCQ0PlBspIDdY3Fn4LDce9kLiOyeO8lmb2CzO/85M3PmzCOw1rJPFAA5YD3299PAVeAycB5oBuqBJsDIMxHwHfgNLALvgdfAS2A+9r48EAL7wniwDwKIAzfAdeAWcANoAY7s8t1/gA/ANPAMeC7C2jdB7FUAOWEC4ARwF7gDXIo9FwmjgVw4dyXr3PVZE3vmDfAIeAh8LcLDgQnAOIw2AQNAP3DcARHKc0ERsElJvxEJUH3PN+A+cE9MR78RVf4Fayu98s7vfmvtkt2kNWttaP8dhfINpSXhoRhvia7dgm+x1k7HgEf24CiKCWJaeKpYCElNwFWx26J69eL4cntQ8b2SmlpedpAB4HHMRHe05UrAD4sTqnc+/L/AK2+6G9QLb8PCayLfs5MGuOCfAN2HYNWTaMME0JNEE/IJwU8AXcAaUMPhJNWGNVmoQO4mts0mMgENbtIC3qUa4bVLeI/KaawpE+CsAyMpA19MCCOO2SbyARpZdYvdpw28S8p7j2jDtqgxLgB1GqeAV0CtE82lkTSKXAWuAF/iEaMp4vQs8ACoKxGzp4mU9zrBFD+PbBGAEfXoA9rL2U3KSP1Zu2ALXdxqAiqVBuAT0FhBoJQGUpVfBs4CKxofGEdKETAop7soQ+B1ISPBNuhsjQTWWrWHRuAzcDQDtl/KIQL8As6INmBEEhboBY6JjWQNvC5oKBh7BXNONcAAb4Fz8g9DNkkPSR+Bi0Ck+/41yd1lGbwb57QI5g0n2OkEDVknzU924kR5N0skIbOqBRuYA2vtSeCdhL02ow4wvhsEEh5fMECHgI88AI9zFqgFOgzQVi5hkGEtAGgzQCv+UquhUKvDEwcYPwQ2GzkA+UoNgbU29Gz1t8QExmPwAMZn8FvOyfhsAssexwHLhkJ6yFdaMRR6cvDMFBTrogHmPNaAOQPMZjQHmKReMGuAGTkaGk8coWa9VoEZAyxQyJHhkQAQzAu66lMepsSm3JzgpIcpsUm3MOJ1Wlxr5uO7bjZMnwDGBXOuWhrTEhHwAxhzSkhZIy35jQnWHGCr5fFYrvwnMJTBY7KW+4cEo3bCbOkRCpwukRkKHRVhBrpEFMMLCjWQnBMLVJukTAlVmafQT1NsBCZNpH1OfYJpm2mbEiqj/bajbDYdktIewVHBki+2u5VqlnbngCZS2C2qvD6l0PBZcr6oXLd42pqlS4Ev2zGeTxA5GXmRTUm7fE0l7fIm4dCSkReOOEMShylaDJ12+ZGk4CuZGsvsyIz3Q1Pej815PzhZHZ2tDk97Pj7/FwRyGrFQ4gLfAAAAAElFTkSuQmCC");
+    width: .115em; height: .115em; border-radius: 50%;
+    vertical-align: baseline; margin: 0 .085em 0 .02em;
   }
 
   @media (max-width: 620px) {
@@ -843,7 +851,7 @@
     padding-bottom: 6px; border-bottom: var(--rule);
   }
   .proj-layout { margin-top: 12px; }
-  .sec-h h2 {
+  .sec-h h1, .sec-h h2 {
     font-family: var(--display); font-weight: 100; font-size: clamp(28px, 4vw, 46px);
     line-height: 1; letter-spacing: 0.06em; color: #fff;
     margin: 0 0 0 var(--name-nudge);
@@ -936,7 +944,7 @@
   /* ====== blog log ===================================================== */
   .log { overflow: hidden; }
   .log-h, .log-row {
-    display: grid; grid-template-columns: 58px 112px minmax(0, 1fr);
+    display: grid; grid-template-columns: 112px minmax(0, 1fr);
     gap: 16px; padding: 12px 16px;
     border-bottom: var(--rule);
   }
@@ -945,7 +953,6 @@
     color: rgba(255, 255, 255, 0.55);
   }
   .log-row:last-child { border-bottom: 0; }
-  .log-row .no { font-size: 12px; color: rgba(255, 255, 255, 0.54); font-variant-numeric: tabular-nums; }
   .log-row .date { font-size: 12px; color: rgba(255, 255, 255, 0.56); font-variant-numeric: tabular-nums; }
   a.log-row { text-decoration: none; }
   a.log-row:hover { background: rgba(255, 255, 255, 0.05); }
@@ -1013,7 +1020,7 @@
     .post { padding: 10px 14px 15px; gap: 9px; }
     .post h3 { font-size: 19px; }
     .post p { font-size: 12px; line-height: 1.85; }
-    .sec-h h2 { letter-spacing: 0.04em; }
+    .sec-h h1, .sec-h h2 { letter-spacing: 0.04em; }
     .proj-text h3 { font-size: 18px; }
     .proj-text p { font-size: 12px; }
   }
@@ -1027,9 +1034,7 @@
 
   @media (max-width: 620px) {
     .log-h { display: none; }
-    .log-row { grid-template-columns: 40px minmax(0, 1fr); row-gap: 2px; }
-    .log-row .date { grid-column: 2; }
-    .log-row .entry { grid-column: 2; }
+    .log-row { grid-template-columns: minmax(0, 1fr); row-gap: 2px; }
   }
 
   /* ====== a single post ================================================ */
@@ -1151,7 +1156,7 @@
     .card dd { font-size: 12px; }
     .card dl .mark { width: 24px; height: 24px; }
 
-    .sec-h h2 { font-size: clamp(24px, 9vh, 40px); }
+    .sec-h h1, .sec-h h2 { font-size: clamp(24px, 9vh, 40px); }
     .proj-text h3 { font-size: 17px; }
     .proj-text p { font-size: 12px; line-height: 1.8; }
     .post h3 { font-size: 18px; }
