@@ -141,12 +141,15 @@
       0 0 40px rgba(14, 14, 15, 0.96),
       0 0 84px rgba(14, 14, 15, 0.88);
   }
+  /* Full white, and a little more weight than the body. At 11px,
+     uppercase, with 0.2em of tracking, Inter's thinnest cuts leave
+     almost no ink on screen and the line disappeared into the art. */
   .role {
-    margin-top: 6px; font-size: 11px; font-weight: 200;
+    margin-top: 6px; font-size: 11px; font-weight: 300;
     letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.78);
+    color: #fff;
   }
-  .role span { color: rgba(255, 255, 255, 0.3); margin: 0 0.62em; letter-spacing: 0; }
+  .role span { color: rgba(255, 255, 255, 0.45); margin: 0 0.62em; letter-spacing: 0; }
 
   /* small type needs air: a touch more tracking and leading than the body,
      and more contrast to hold up against the art */
