@@ -21,7 +21,6 @@ of it can still cover it.
 import random
 import sys
 
-N = 3
 A, B, C = 0.866, 0.5, 1.0          # isometric basis
 
 # face normal -> (corner offsets, the neighbour direction per edge)
@@ -39,7 +38,7 @@ def project(x, y, z):
     return ((x - y) * A, (x + y) * B - z * C)
 
 
-def build(removed, outer="1.1", inner="0.3", seam="0.22", size=64, pad=2):
+def build(removed, outer="1.1", inner="0.3", seam="0.22", size=64, pad=2, N=3):
     present = {(x, y, z)
                for x in range(N) for y in range(N) for z in range(N)
                if (x, y, z) not in removed}
@@ -113,7 +112,7 @@ def build(removed, outer="1.1", inner="0.3", seam="0.22", size=64, pad=2):
             % (size, size, size, size, outer, "\n".join(out)))
 
 
-def carve(seed, count=6):
+def carve(seed, count=6, N=3):
     """Pick blocks to remove. The far corner is never seen, so skip it."""
     rng = random.Random(seed)
     cells = [(x, y, z) for x in range(N) for y in range(N) for z in range(N)]
@@ -122,6 +121,12 @@ def carve(seed, count=6):
 
 
 if __name__ == "__main__":
-    seed = int(sys.argv[2]) if len(sys.argv) > 2 else 5
-    open(sys.argv[1], "w").write(build(carve(seed, 6)))
-    print("wrote %s (seed %d)" % (sys.argv[1], seed))
+    # What the site ships: a 2x2x2 cube with the block nearest the eye
+    # taken out, so the void faces the viewer and the silhouette stays a
+    # clean hexagon. 2x2 rather than 3x3 because four cells a face still
+    # resolve in a 16px browser tab and nine do not.
+    CUT = {(1, 1, 1)}
+    out = sys.argv[1] if len(sys.argv) > 1 else "../img/favicon.svg"
+    open(out, "w").write(build(CUT, outer="1.8", inner="0.45", seam="0.3",
+                               pad=2, N=2))
+    print("wrote", out)
