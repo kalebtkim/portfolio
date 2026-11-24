@@ -70,6 +70,14 @@
 
   var at = function () { return '<i class="at"></i>'; };
   var dot = function () { return '<i class="dot"></i>'; };
+  /* U+2197 has an emoji presentation, and iOS picks it: the arrow came
+     out as a blue sticker instead of a letterform. Drawn here so it
+     takes currentColor and the surrounding weight, and cannot be
+     substituted by the system at all. */
+  var arrow = function () {
+    return '<svg class="ico" viewBox="0 0 10 10" aria-hidden="true" focusable="false">' +
+           '<path d="M3 7L7 3M4.2 3H7v2.8"/></svg>';
+  };
   var mount = function (id) { return document.getElementById(id); };
 
   /* the address, shown as pieces with images standing in for @ and . */
@@ -166,7 +174,7 @@
 
     var linkRows = (S.links || []).map(function (l) {
       return "<div><dt>" + esc(l[0]) + "</dt><dd>" + esc(l[1]) + "</dd>" +
-        '<a class="btn" href="' + esc(l[2]) + '" target="_blank" rel="noopener">Open &#8599;</a></div>';
+        '<a class="btn" href="' + esc(l[2]) + '" target="_blank" rel="noopener">Open' + arrow() + '</a></div>';
     }).join("");
 
     var emailRow = "<div><dt>Email</dt><dd class=\"addr\">" + emailMarkup() + "</dd>" +
@@ -210,7 +218,7 @@
       ? list.map(function (p) {
           var btns = (p.links || []).map(function (l) {
             return '<a class="btn" href="' + esc(l[1]) + '" target="_blank" rel="noopener">' +
-              esc(l[0]) + " &#8599;</a>";
+              esc(l[0]) + arrow() + '</a>';
           }).join(" ");
           return '<article class="card" id="' + esc(p.id) + '">' +
             '<div class="card-h"><span>' + esc(p.name) + "</span>" +
@@ -400,7 +408,7 @@
     var links = (S.links || []).map(function (l) {
       return '<a class="btn" href="' + esc(l[2]) + '" target="_blank" rel="noopener">' +
         '<span class="k">' + esc(l[0]) + '</span>' +
-        '<span class="v">: ' + esc(l[1]) + " &#8599;</span></a>";
+        '<span class="v">: ' + esc(l[1]) + arrow() + "</span></a>";
     }).join("");
     el.innerHTML = '<div class="in"><span class="lab">Contact</span><div class="items">' +
       '<button class="btn" data-copy-email type="button">' +

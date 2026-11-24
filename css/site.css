@@ -217,6 +217,11 @@
     padding: 5px 11px; cursor: pointer; text-decoration: none; white-space: nowrap;
     transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
   }
+  .btn .ico {
+    width: .78em; height: .78em; margin-left: .42em; vertical-align: -.08em;
+    fill: none; stroke: currentColor; stroke-width: 1.15;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
   .btn:hover {
     color: #fff;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.11));
