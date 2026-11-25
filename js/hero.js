@@ -81,14 +81,34 @@
     }
 
     layout();
-    raf = requestAnimationFrame(tick);
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) {
+
+    /* The art only needs to run while it is on screen. It used to stop
+       solely when the whole tab went to the background, so scrolling
+       down to the projects left it redrawing the full canvas every
+       frame behind the content. onscreen() gates both that and the
+       tab check. */
+    var visible = true, awake = true;
+
+    function sync() {
+      var want = visible && !document.hidden;
+      if (want === awake) { return; }
+      awake = want;
+      if (!want) {
         if (raf) { cancelAnimationFrame(raf); raf = null; }
       } else if (!raf) {
-        started = 0; raf = requestAnimationFrame(tick);
+        started = 0; lastDraw = -1; raf = requestAnimationFrame(tick);
       }
-    });
+    }
+
+    raf = requestAnimationFrame(tick);
+    document.addEventListener("visibilitychange", sync);
+
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        sync();
+      }, { rootMargin: "100px 0px" }).observe(cv);
+    }
 
     var tid;
     window.addEventListener("resize", function () {
