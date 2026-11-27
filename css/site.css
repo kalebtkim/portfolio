@@ -21,7 +21,7 @@
        below is multiplied by it, so the balance between the layers stays
        as it was and only the overall intensity moves. 1 is the original.
        Past about 1.6 the ridge starts to posterise. */
-    --vibrance: 1.3;
+    --vibrance: 1.6;
     --glass-body: blur(18px) saturate(calc(185% * var(--vibrance))) brightness(1.06);
     --rule: 1px solid rgba(255, 255, 255, 0.10);
     /* the gap below the hero buttons and the gap above Projects are the
